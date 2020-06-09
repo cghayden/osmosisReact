@@ -1,5 +1,11 @@
+:root {
+  --cardHeight: 100px;
+  --cardWidth: 70px;
+}
+
 .App {
   text-align: center;
+  margin: 20px;
 }
 
 .App-logo {
@@ -28,11 +34,75 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.card {
+  z-index: 1;
+  width: var(--cardWidth);
+  height: var(--cardHeight);
+  background: white;
+  color: black;
+  display: grid;
+  grid-template-rows: repeat(2, 50px);
+  place-items: center;
+  border-radius: 5px;
+  border: 1px solid darkgray;
+
+  transition: all 2s linear;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+.card:after {
+  z-index: -10;
+  content: "";
+  position: absolute;
+  height: --var(cardHeight) + 1;
+  right: 0px;
+  bottom: 0px;
+  top: -1px;
+  left: 0px;
+  background: linear-gradient(to right, lightBlue, yellow);
+  border-radius: 5px;
+  border: 1px solid gray;
+
+  -webkit-transform: rotateY(180deg);
+  transform: rotateY(180deg);
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.card-front,
+.card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  backface-visibility: hidden;
+}
+
+.card-front {
+  background-color: whitesmoke;
+  color: black;
+  display: grid;
+  grid-template-rows: repeat(2, 50px);
+  place-items: center;
+  backface-visibility: hidden;
+}
+.card-back {
+  background-color: aqua;
+  transform: rotateY(-180deg);
+}
+
+.cardRow {
+  padding: 20px;
+}
+
+.cardPileAnchor {
+  background-color: lightgray;
+  border-radius: 5px;
+  position: relative;
+  width: var(--cardWidth);
+  height: var(--cardHeight);
 }
