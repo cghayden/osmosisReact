@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
+import { motion } from "framer-motion";
 
-const CardFront = styled.div`
+const CardFront = styled(motion.div)`
   position: absolute;
   left: ${(props) => props.offset};
   width: var(--cardWidth);
@@ -42,7 +43,7 @@ export default function Card({
 }) {
   if (!facedown) {
     return (
-      <CardFront offset={`${i * 5}px`} draggable="true">
+      <CardFront drag offset={`${i * 5}px`}>
         <p className="cardValue">{card.value}</p>
         <p className="cardSuit">{card.suit}</p>
       </CardFront>
