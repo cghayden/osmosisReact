@@ -43,6 +43,8 @@ export default function Card({ facedown = false, i, card }) {
 
   function handleDragStart(e, info) {
     console.log("start e:", e, "start info:", info);
+    const suit = card.suit;
+    console.log("suit:", suit);
     // setHidden(true);
   }
 

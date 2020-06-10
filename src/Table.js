@@ -8,7 +8,6 @@ import { useAppState } from "./AppContext";
 
 export default function Table() {
   const { foundationStore, tableauStore, dealNewGame } = useAppState();
-  console.log("foundationStore:", foundationStore);
 
   return (
     <TableLayout>

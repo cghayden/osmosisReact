@@ -63,15 +63,17 @@ function useDeal() {
     //5. set remainder of suffledDeck to stock
     const stock = shuffledDeck;
     // return foundations and stock to pass down to Table
+    const startValue = foundations.f1.value;
     return {
       foundations,
       stock,
       tableaus,
+      startValue,
     };
   }
-  const { foundations, stock, tableaus } = dealCards(suits, values);
+  const { foundations, stock, tableaus, startValue } = dealCards(suits, values);
 
-  return { foundations, stock, tableaus };
+  return { foundations, stock, tableaus, startValue };
 }
 
 export { useDeal };

@@ -4,19 +4,25 @@ import { motion } from "framer-motion";
 import Card from "./Card";
 
 export default function FoundationRow({ fid, cards }) {
-  // let rowRef = useRef();
-  // const { foundations, updateFoundations } = useAppState();
-  // console.log("foundations:", foundations);
+  let rowRef = useRef();
+  const { suitPlacements, updateSuitPlacements } = useAppState();
+  console.log("suitPlacements:", suitPlacements);
 
-  // useEffect(() => {
-  //   const rowSuit = cards[0].suit;
-  //   const fClient = rowRef.current.getBoundingClientRect();
-  //   updateFoundations((foundations) => (foundations[rowSuit].bounds = fClient));
-  // }, [cards, foundations, updateFoundations]);
+  function setBounds() {
+    const rowSuit = cards[0].suit;
+    const rowClientRect = rowRef.current.getBoundingClientRect();
+    const updatedPlacements = {
+      ...suitPlacements,
+      [rowSuit]: { foundation: fid, bounds: rowClientRect },
+    };
+    updateSuitPlacements(updatedPlacements);
+  }
+
+  useEffect(setBounds, []);
 
   return (
     <motion.div
-      // ref={rowRef}
+      ref={rowRef}
       style={{ width: "500px", zIndex: -1 }}
       className="cardRow"
       id={fid}
