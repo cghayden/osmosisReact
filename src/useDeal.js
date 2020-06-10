@@ -1,0 +1,77 @@
+function useDeal() {
+  const suits = ["h", "d", "s", "c"];
+  const values = [
+    "a",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "J",
+    "Q",
+    "K",
+  ];
+
+  function makeDeck(suits, values) {
+    const orderedDeck = [];
+    let uid = 1;
+    for (const suit of suits) {
+      for (const value of values) {
+        orderedDeck.push({ suit, value, uid, faceDown: false });
+        uid += 1;
+      }
+    }
+    return orderedDeck;
+  }
+
+  function shuffleDeck(deck) {
+    const shuffledDeck = [];
+    const sourceDeck = [...deck];
+    while (sourceDeck.length > 0) {
+      const randomN = Math.floor(Math.random() * sourceDeck.length);
+      const randomPick = sourceDeck.splice(randomN, 1);
+      shuffledDeck.push(randomPick[0]);
+    }
+    return shuffledDeck;
+  }
+
+  function dealCards(suits, values) {
+    // 1. make a deck
+    const orderedDeck = makeDeck(suits, values);
+    //2. shuffle the deck
+    const shuffledDeck = shuffleDeck(orderedDeck);
+
+    //3. assemble tableaus and set them to store
+    const tableau1 = shuffledDeck.splice(0, 4);
+    const tableau2 = shuffledDeck.splice(0, 4);
+    const tableau3 = shuffledDeck.splice(0, 4);
+    const tableau4 = shuffledDeck.splice(0, 4);
+    const tableaus = { t1: tableau1, t2: tableau2, t3: tableau3, t4: tableau4 };
+
+    //4. set foundations, with next card in shuffledDeck as the first card in the first foundation
+    const f1 = shuffledDeck.shift();
+    const foundations = {
+      f1: { suit: f1.suit, cards: [f1] },
+      f2: { suit: null, cards: [] },
+      f3: { suit: null, cards: [] },
+      f4: { suit: null, cards: [] },
+    };
+    //5. set remainder of suffledDeck to stock
+    const stock = shuffledDeck;
+    // return foundations and stock to pass down to Table
+    return {
+      foundations,
+      stock,
+      tableaus,
+    };
+  }
+  const { foundations, stock, tableaus } = dealCards(suits, values);
+
+  return { foundations, stock, tableaus };
+}
+
+export { useDeal };

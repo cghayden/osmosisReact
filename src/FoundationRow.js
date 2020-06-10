@@ -1,15 +1,33 @@
-import React from "react";
-// import styled from 'styled-components';
+import React, { useRef, useEffect } from "react";
+import { useAppState } from "./AppContext";
+import { motion } from "framer-motion";
 import Card from "./Card";
 
-export default function FoundationRow({ cards }) {
+export default function FoundationRow({ fid, cards }) {
+  // let rowRef = useRef();
+  // const { foundations, updateFoundations } = useAppState();
+  // console.log("foundations:", foundations);
+
+  // useEffect(() => {
+  //   const rowSuit = cards[0].suit;
+  //   const fClient = rowRef.current.getBoundingClientRect();
+  //   updateFoundations((foundations) => (foundations[rowSuit].bounds = fClient));
+  // }, [cards, foundations, updateFoundations]);
+
   return (
-    <div className="cardRow">
+    <motion.div
+      // ref={rowRef}
+      style={{ width: "500px", zIndex: -1 }}
+      className="cardRow"
+      id={fid}
+      onDragOver={() => false}
+      onPointerUp={(e) => console.log("pointer up:", e)}
+    >
       <div className="cardPileAnchor">
         {cards.map((card, i) => (
-          <Card key={card.uid} card={card} i={i} />
+          <Card key={card.uid} card={card} id={fid} />
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 }

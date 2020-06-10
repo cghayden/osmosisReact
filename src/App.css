@@ -106,3 +106,13 @@
   width: var(--cardWidth);
   height: var(--cardHeight);
 }
+
+.stockRow {
+  padding-left: 40px;
+  display: grid;
+  grid-template-columns: 130px 130px;
+  place-items: center;
+}
+.stockPile {
+  justify-self: right;
+}
