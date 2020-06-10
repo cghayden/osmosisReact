@@ -37,7 +37,7 @@ const CardBack = styled.div`
 `;
 
 export default function Card({
-  facedown,
+  facedown = false,
   i,
   card = { uid: 0, suit: "p", value: 20 },
 }) {

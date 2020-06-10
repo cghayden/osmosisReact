@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import TableauPile from "./TableauPile";
-
+import FoundationRow from "./FoundationRow";
 const TableLayout = styled.div`
   background: green;
   width: 100vw;
@@ -39,12 +39,28 @@ const stack = [
   { suit: "d", value: 23 },
 ];
 
+const foundations = {
+  f1: {
+    uid: "f1",
+    rowSuit: "c",
+    cards: [{ uid: "fc1", suit: "c", value: "0" }],
+  },
+  f2: { uid: "f2", rowSuit: "d", cards: [] },
+  f3: { uid: "f3", rowSuit: "h", cards: [] },
+  f4: { uid: "f4", rowSuit: "s", cards: [] },
+};
+
 export default function Table() {
   return (
     <TableLayout>
       <TableauColumn>
         <TableauPile cards={stack} />
       </TableauColumn>
+      <div>
+        {Object.keys(foundations).map((key) => (
+          <FoundationRow key={key} cards={foundations[key].cards} />
+        ))}
+      </div>
     </TableLayout>
   );
 }
