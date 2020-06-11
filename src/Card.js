@@ -6,11 +6,13 @@ import { useAppState } from "./AppContext";
 export default function Card({ facedown = false, i, card }) {
   const [dropTargetBounds, setDropTargetBounds] = useState();
   const [dropTargetIndex, setDropTargetIndex] = useState();
-  const [dropTargetRef, setDropTargetRef] = useState();
+
   const {
     foundationStore,
     updateFoundationStore,
     foundationStartValue,
+    tableauStore,
+    updateTableauStore,
   } = useAppState();
 
   function setDropTargetValues() {
@@ -19,11 +21,9 @@ export default function Card({ facedown = false, i, card }) {
       const nextFoundationIndex = foundationStore.findIndex(
         (el) => el.suit === null
       );
-      console.log("nextFoundationIndex:", nextFoundationIndex);
       const targetFoundation = foundationStore[nextFoundationIndex];
       setDropTargetIndex(nextFoundationIndex);
       setDropTargetBounds(targetFoundation.bounds);
-      setDropTargetRef(targetFoundation.ref);
     }
     //2. suit already has a row... find suit foundation index and bounds
     const existingFoundation = foundationStore.find(
@@ -44,7 +44,15 @@ export default function Card({ facedown = false, i, card }) {
     return;
   }
 
+  function removeCardFromTableau() {
+    const tableauCopy = { ...tableauStore };
+    tableauCopy[card.startLocation].pop();
+
+    updateTableauStore(tableauCopy);
+  }
+
   function handleDragStart(e, info) {
+    console.log("tableauStore:", tableauStore);
     setDropTargetValues();
   }
 
@@ -65,6 +73,7 @@ export default function Card({ facedown = false, i, card }) {
       newFoundation.cards = [...newFoundation.cards, card];
       foundationStoreCopy[dropTargetIndex] = newFoundation;
       updateFoundationStore(foundationStoreCopy);
+      removeCardFromTableau();
     } else {
       console.log("invalid drop");
     }
