@@ -7,9 +7,11 @@ export default function Card({ facedown = false, i, card }) {
   const [dropTargetBounds, setDropTargetBounds] = useState();
   const [dropTargetIndex, setDropTargetIndex] = useState();
   const [dropTargetRef, setDropTargetRef] = useState();
-  const { foundationStore, foundationStartValue } = useAppState();
-
-  // useEffect(setDropTargetValues, [card]);
+  const {
+    foundationStore,
+    updateFoundationStore,
+    foundationStartValue,
+  } = useAppState();
 
   function setDropTargetValues() {
     //options: 1. =startValue, set in a new foundationRow
@@ -28,7 +30,6 @@ export default function Card({ facedown = false, i, card }) {
       (el) => el.suit === card.suit
     );
     if (existingFoundation) {
-      console.log("suit has a Foundation:", existingFoundation.bounds);
       const foundationIndex = foundationStore.findIndex(
         (el) => el.suit === card.suit
       );
@@ -45,13 +46,11 @@ export default function Card({ facedown = false, i, card }) {
 
   function handleDragStart(e, info) {
     setDropTargetValues();
-    console.log("start drag, card:", card);
   }
 
   function handleDragEnd(e, info) {
     const dropPosition = { x: ~~e.clientX, y: ~~e.clientY };
     if (!dropTargetBounds) {
-      console.log("no play for this card");
       return;
     }
 
@@ -61,7 +60,11 @@ export default function Card({ facedown = false, i, card }) {
       dropTargetBounds.top < dropPosition.y &&
       dropPosition.y < dropTargetBounds.bottom
     ) {
-      console.log("valid drop");
+      const newFoundation = { ...foundationStore[dropTargetIndex] };
+      const foundationStoreCopy = [...foundationStore];
+      newFoundation.cards = [...newFoundation.cards, card];
+      foundationStoreCopy[dropTargetIndex] = newFoundation;
+      updateFoundationStore(foundationStoreCopy);
     } else {
       console.log("invalid drop");
     }

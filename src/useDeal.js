@@ -21,7 +21,7 @@ function useDeal() {
     let uid = 1;
     for (const suit of suits) {
       for (const value of values) {
-        orderedDeck.push({ suit, value, uid, faceDown: false });
+        orderedDeck.push({ suit, value, uid });
         uid += 1;
       }
     }
@@ -47,9 +47,16 @@ function useDeal() {
 
     //3. assemble tableaus and set them to store
     const tableau1 = shuffledDeck.splice(0, 4);
+    tableau1.forEach((card) => (card.startLocation = "t1"));
     const tableau2 = shuffledDeck.splice(0, 4);
+    tableau2.forEach((card) => (card.startLocation = "t2"));
+
     const tableau3 = shuffledDeck.splice(0, 4);
+    tableau3.forEach((card) => (card.startLocation = "t3"));
+
     const tableau4 = shuffledDeck.splice(0, 4);
+    tableau4.forEach((card) => (card.startLocation = "t4"));
+
     const tableaus = { t1: tableau1, t2: tableau2, t3: tableau3, t4: tableau4 };
 
     //4. set foundations, with next card in shuffledDeck as the first card in the first foundation
@@ -62,6 +69,7 @@ function useDeal() {
     ];
     //5. set remainder of suffledDeck to stock
     const stock = shuffledDeck;
+    stock.forEach((card) => (card.startLocation = "s"));
     // return foundations and stock to pass down to Table
     const startValue = foundations[0].value;
     return {
