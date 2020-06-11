@@ -54,16 +54,16 @@ function useDeal() {
 
     //4. set foundations, with next card in shuffledDeck as the first card in the first foundation
     const f1 = shuffledDeck.shift();
-    const foundations = {
-      f1: { suit: f1.suit, cards: [f1] },
-      f2: { suit: null, cards: [] },
-      f3: { suit: null, cards: [] },
-      f4: { suit: null, cards: [] },
-    };
+    const foundations = [
+      { suit: f1.suit, cards: [f1], bounds: {} },
+      { suit: null, cards: [], bounds: {} },
+      { suit: null, cards: [], bounds: {} },
+      { suit: null, cards: [], bounds: {} },
+    ];
     //5. set remainder of suffledDeck to stock
     const stock = shuffledDeck;
     // return foundations and stock to pass down to Table
-    const startValue = foundations.f1.value;
+    const startValue = foundations[0].value;
     return {
       foundations,
       stock,

@@ -8,6 +8,7 @@ import { useAppState } from "./AppContext";
 
 export default function Table() {
   const { foundationStore, tableauStore, dealNewGame } = useAppState();
+  // console.log("foundationStore:", foundationStore);
 
   return (
     <TableLayout>
@@ -19,19 +20,9 @@ export default function Table() {
           ))}
       </TableauColumn>
       <div>
-        {foundationStore &&
-          Object.keys(foundationStore).map((key) => {
-            if (foundationStore[key].cards.length > 0) {
-              return (
-                <FoundationRow
-                  key={key}
-                  cards={foundationStore[key].cards}
-                  fid={key}
-                />
-              );
-            }
-            return null;
-          })}
+        {foundationStore.map((foundation, i) => (
+          <FoundationRow key={i} cards={foundation.cards} foundationIndex={i} />
+        ))}
       </div>
       <StockRow />
     </TableLayout>

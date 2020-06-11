@@ -4,16 +4,17 @@ const AppContext = createContext(null);
 
 function AppStateProvider({ children }) {
   const [draggedCard, setDraggedCard] = useState({ card: null, from: null });
-  const [foundationStore, updateFoundations] = useState();
+  const [foundationStore, updateFoundationStore] = useState([]);
   const [tableauStore, updateTableauStore] = useState();
   const [stockStore, updateStock] = useState();
   const [discardPile, updateDiscardPile] = useState([]);
   const [foundationStartValue, setStartValue] = useState();
   const [suitPlacements, updateSuitPlacements] = useState({});
+  const [foundationRefs, setFoundationRefs] = useState([]);
 
   function dealNewGame() {
     const { foundations, stock, tableaus, startValue } = deal();
-    updateFoundations(foundations);
+    updateFoundationStore(foundations);
     updateTableauStore(tableaus);
     updateStock(stock);
     updateDiscardPile([]);
@@ -28,7 +29,7 @@ function AppStateProvider({ children }) {
         draggedCard,
         setDraggedCard,
         foundationStore,
-        updateFoundations,
+        updateFoundationStore,
         tableauStore,
         updateTableauStore,
         stockStore,
@@ -39,6 +40,8 @@ function AppStateProvider({ children }) {
         suitPlacements,
         updateSuitPlacements,
         foundationStartValue,
+        foundationRefs,
+        setFoundationRefs,
       }}
     >
       {children}

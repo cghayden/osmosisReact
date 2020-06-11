@@ -3,19 +3,28 @@ import { useAppState } from "./AppContext";
 import { motion } from "framer-motion";
 import Card from "./Card";
 
-export default function FoundationRow({ fid, cards }) {
+export default function FoundationRow({ foundationIndex, cards }) {
   let rowRef = useRef();
-  const { suitPlacements, updateSuitPlacements } = useAppState();
-  console.log("suitPlacements:", suitPlacements);
+  const {
+    // setFoundationRefs,
+    // foundationRefs,
+    foundationStore,
+    updateFoundationStore,
+  } = useAppState();
+
+  function setFoundationRef() {
+    const newFoundationStore = { ...foundationStore };
+    newFoundationStore[foundationIndex].ref = rowRef.current;
+    updateFoundationStore(newFoundationStore);
+  }
+
+  useEffect(setFoundationRef, []);
 
   function setBounds() {
-    const rowSuit = cards[0].suit;
     const rowClientRect = rowRef.current.getBoundingClientRect();
-    const updatedPlacements = {
-      ...suitPlacements,
-      [rowSuit]: { foundation: fid, bounds: rowClientRect },
-    };
-    updateSuitPlacements(updatedPlacements);
+    const newFoundationStore = [...foundationStore];
+    newFoundationStore[foundationIndex].bounds = rowClientRect;
+    updateFoundationStore(newFoundationStore);
   }
 
   useEffect(setBounds, []);
@@ -25,13 +34,11 @@ export default function FoundationRow({ fid, cards }) {
       ref={rowRef}
       style={{ width: "500px", zIndex: -1 }}
       className="cardRow"
-      id={fid}
-      onDragOver={() => false}
-      onPointerUp={(e) => console.log("pointer up:", e)}
+      id={`f${foundationIndex}`}
     >
       <div className="cardPileAnchor">
         {cards.map((card, i) => (
-          <Card key={card.uid} card={card} id={fid} />
+          <Card key={card.uid} card={card} i={i} />
         ))}
       </div>
     </motion.div>

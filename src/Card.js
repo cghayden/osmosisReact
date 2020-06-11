@@ -1,7 +1,92 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
-// import { useAppState } from "./AppContext";
+import { useAppState } from "./AppContext";
+
+export default function Card({ facedown = false, i, card }) {
+  const [dropTargetBounds, setDropTargetBounds] = useState();
+  const [dropTargetIndex, setDropTargetIndex] = useState();
+  const [dropTargetRef, setDropTargetRef] = useState();
+  const { foundationStore, foundationStartValue } = useAppState();
+
+  // useEffect(setDropTargetValues, [card]);
+
+  function setDropTargetValues() {
+    //options: 1. =startValue, set in a new foundationRow
+    if (card.value === foundationStartValue) {
+      const nextFoundationIndex = foundationStore.findIndex(
+        (el) => el.suit === null
+      );
+      console.log("nextFoundationIndex:", nextFoundationIndex);
+      const targetFoundation = foundationStore[nextFoundationIndex];
+      setDropTargetIndex(nextFoundationIndex);
+      setDropTargetBounds(targetFoundation.bounds);
+      setDropTargetRef(targetFoundation.ref);
+    }
+    //2. suit already has a row... find suit foundation index and bounds
+    const existingFoundation = foundationStore.find(
+      (el) => el.suit === card.suit
+    );
+    if (existingFoundation) {
+      console.log("suit has a Foundation:", existingFoundation.bounds);
+      const foundationIndex = foundationStore.findIndex(
+        (el) => el.suit === card.suit
+      );
+      setDropTargetIndex(foundationIndex);
+      setDropTargetBounds(existingFoundation.bounds);
+    }
+    //3.  value not starter and suit not in a row.
+    else {
+      setDropTargetIndex(null);
+      setDropTargetBounds(null);
+    }
+    return;
+  }
+
+  function handleDragStart(e, info) {
+    setDropTargetValues();
+    console.log("start drag, card:", card);
+  }
+
+  function handleDragEnd(e, info) {
+    const dropPosition = { x: ~~e.clientX, y: ~~e.clientY };
+    if (!dropTargetBounds) {
+      console.log("no play for this card");
+      return;
+    }
+
+    if (
+      dropTargetBounds.left < dropPosition.x &&
+      dropPosition.x < dropTargetBounds.right &&
+      dropTargetBounds.top < dropPosition.y &&
+      dropPosition.y < dropTargetBounds.bottom
+    ) {
+      console.log("valid drop");
+    } else {
+      console.log("invalid drop");
+    }
+    //need to reset dropTargetValues to undefined
+  }
+
+  if (!facedown) {
+    return (
+      <CardFront
+        offset={`${i * 5}px`}
+        drag
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+        // dragConstraints={dropTargetBounds}
+        dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+        dragElastic={1}
+      >
+        <p className="cardValue">{card.value}</p>
+        <p className="cardSuit">{card.suit}</p>
+      </CardFront>
+    );
+  }
+
+  return <CardBack offset={`${i * 5}px`} />;
+}
 
 const CardFront = styled(motion.div)`
   position: absolute;
@@ -37,36 +122,3 @@ const CardBack = styled.div`
   perspective: 1000px;
   backface-visibility: hidden;
 `;
-
-export default function Card({ facedown = false, i, card }) {
-  // const { draggedCard, setDraggedCard } = useAppState();
-
-  function handleDragStart(e, info) {
-    console.log("start e:", e, "start info:", info);
-    const suit = card.suit;
-    console.log("suit:", suit);
-    // setHidden(true);
-  }
-
-  function handleDragEnd(e, info) {
-    console.log("end drag e:", e, "end drag info:", info);
-    // e.dataTransfer.setDragImage(null, 0, 0);
-    // setHidden(false);
-  }
-
-  if (!facedown) {
-    return (
-      <CardFront
-        offset={`${i * 5}px`}
-        drag
-        onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
-      >
-        <p className="cardValue">{card.value}</p>
-        <p className="cardSuit">{card.suit}</p>
-      </CardFront>
-    );
-  }
-
-  return <CardBack offset={`${i * 5}px`} />;
-}
