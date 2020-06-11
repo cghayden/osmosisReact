@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useAppState } from "./AppContext";
 
 export default function Card({ facedown = false, i, card }) {
@@ -52,7 +52,6 @@ export default function Card({ facedown = false, i, card }) {
   }
 
   function handleDragStart(e, info) {
-    console.log("tableauStore:", tableauStore);
     setDropTargetValues();
   }
 
@@ -80,24 +79,34 @@ export default function Card({ facedown = false, i, card }) {
     //need to reset dropTargetValues to undefined
   }
 
-  if (!facedown) {
-    return (
-      <CardFront
-        offset={`${i * 5}px`}
-        drag
-        onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
-        // dragConstraints={dropTargetBounds}
-        dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-        dragElastic={1}
-      >
-        <p className="cardValue">{card.value}</p>
-        <p className="cardSuit">{card.suit}</p>
-      </CardFront>
-    );
-  }
-
-  return <CardBack offset={`${i * 5}px`} />;
+  return (
+    <AnimatePresence exitBeforeEnter>
+      {facedown ? (
+        <CardBack
+          offset={`${i * 5}px`}
+          key={"back"}
+          exit={{ rotateY: 90, translateX: -40, scale: 1.1 }}
+          transition={{ duration: 0.2 }}
+        />
+      ) : (
+        <CardFront
+          // initial={{ rotateY: 180 }}
+          // animate={{ rotateY: 0 }}
+          key={"front"}
+          offset={`${i * 5}px`}
+          drag
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+          // dragConstraints={dropTargetBounds}
+          dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+          dragElastic={1}
+        >
+          <p className="cardValue">{card.value}</p>
+          <p className="cardSuit">{card.suit}</p>
+        </CardFront>
+      )}
+    </AnimatePresence>
+  );
 }
 
 const CardFront = styled(motion.div)`
@@ -114,6 +123,7 @@ const CardFront = styled(motion.div)`
   place-items: center;
   border-radius: 5px;
   opacity: ${(props) => (props.hidden ? 0.01 : 1)};
+  backface-visibility: hidden;
 
   .cardSuit,
   .cardValue {
@@ -121,7 +131,7 @@ const CardFront = styled(motion.div)`
   }
 `;
 
-const CardBack = styled.div`
+const CardBack = styled(motion.div)`
   position: absolute;
   left: ${(props) => props.offset};
   width: var(--cardWidth);
@@ -129,8 +139,7 @@ const CardBack = styled.div`
   border-radius: 5px;
   border: 1px solid black;
   background-color: aqua;
-  transition: transform 0.8s;
+  /* transition: transform 0.8s; */
   transform-style: preserve-3d;
-  perspective: 1000px;
-  backface-visibility: hidden;
+  /* backface-visibility: hidden; */
 `;
