@@ -1,7 +1,4 @@
 import React from "react";
-import { AnimatePresence } from "framer-motion";
-import CardFront from "./CardFront";
-import CardBack from "./CardBack";
 import Card from "./Card";
 
 export default function TableauPile({ cards = [] }) {

@@ -3,12 +3,7 @@ import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAppState } from "./AppContext";
 
-export default function Card({
-  facedown = false,
-  i,
-  card,
-  foundation = false,
-}) {
+export default function Card({ facedown = false, i, card }) {
   const [dropTargetBounds, setDropTargetBounds] = useState();
   const [dropTargetIndex, setDropTargetIndex] = useState();
 
@@ -94,7 +89,6 @@ export default function Card({
         />
       ) : (
         <CardFront
-          foundation={foundation}
           key={"front"}
           offset={`${i * 5}px`}
           drag
@@ -126,7 +120,7 @@ const CardFront = styled(motion.div)`
   border-radius: 5px;
   opacity: ${(props) => (props.hidden ? 0.01 : 1)};
   backface-visibility: hidden;
-  z-index: ${(props) => (props.foundation ? 0 : 100)};
+  z-index: 100;
 
   .cardSuit,
   .cardValue {
