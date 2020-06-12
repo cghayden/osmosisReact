@@ -1,24 +1,12 @@
 import React, { useRef, useEffect } from "react";
 import { useAppState } from "./AppContext";
 import { motion } from "framer-motion";
-import Card from "./Card";
+
+import CardFront from "./CardFront";
 
 export default function FoundationRow({ foundationIndex, cards }) {
   let rowRef = useRef();
-  const {
-    // setFoundationRefs,
-    // foundationRefs,
-    foundationStore,
-    updateFoundationStore,
-  } = useAppState();
-
-  function setFoundationRef() {
-    const newFoundationStore = { ...foundationStore };
-    newFoundationStore[foundationIndex].ref = rowRef.current;
-    updateFoundationStore(newFoundationStore);
-  }
-
-  useEffect(setFoundationRef, []);
+  const { foundationStore, updateFoundationStore, gameNumber } = useAppState();
 
   function setBounds() {
     const rowClientRect = rowRef.current.getBoundingClientRect();
@@ -27,20 +15,23 @@ export default function FoundationRow({ foundationIndex, cards }) {
     updateFoundationStore(newFoundationStore);
   }
 
-  useEffect(setBounds, []);
+  useEffect(setBounds, [gameNumber]);
 
   return (
-    <motion.div
-      ref={rowRef}
-      style={{ width: "500px", zIndex: -1 }}
-      className="cardRow"
-      id={`f${foundationIndex}`}
-    >
+    <motion.div ref={rowRef} className="cardRow" id={`f${foundationIndex}`}>
       <div className="cardPileAnchor">
         {cards.map((card, i) => (
-          <Card key={card.uid} card={card} i={i} />
+          <CardFront key={card.uid} card={card} i={i} foundation={true} />
         ))}
       </div>
     </motion.div>
   );
 }
+
+// function setFoundationRef() {
+//   const newFoundationStore = { ...foundationStore };
+//   newFoundationStore[foundationIndex].ref = rowRef.current;
+//   updateFoundationStore(newFoundationStore);
+// }
+
+// useEffect(setFoundationRef, []);

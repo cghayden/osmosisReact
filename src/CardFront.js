@@ -1,14 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useAppState } from "./AppContext";
 
-export default function Card({
-  facedown = false,
-  i,
-  card,
-  foundation = false,
-}) {
+export default function CardFront({ i, card, foundation = false }) {
   const [dropTargetBounds, setDropTargetBounds] = useState();
   const [dropTargetIndex, setDropTargetIndex] = useState();
 
@@ -26,8 +21,7 @@ export default function Card({
     updateTableauStore(tableauCopy);
   }
 
-  function setDropTargetValues() {
-    //options: 1. =startValue, set in a new foundationRow
+  function handleDragStart() {
     if (card.value === foundationStartValue) {
       const nextFoundationIndex = foundationStore.findIndex(
         (el) => el.suit === null
@@ -40,10 +34,12 @@ export default function Card({
     const existingFoundation = foundationStore.find(
       (el) => el.suit === card.suit
     );
+    console.log("existingFoundation:", existingFoundation);
     if (existingFoundation) {
       const foundationIndex = foundationStore.findIndex(
         (el) => el.suit === card.suit
       );
+      console.log("foundationIndex:", foundationIndex);
       setDropTargetIndex(foundationIndex);
       setDropTargetBounds(existingFoundation.bounds);
     }
@@ -55,11 +51,7 @@ export default function Card({
     return;
   }
 
-  function handleDragStart(e, info) {
-    setDropTargetValues();
-  }
-
-  function handleDragEnd(e, info) {
+  function handleDragEnd(e) {
     const dropPosition = { x: ~~e.clientX, y: ~~e.clientY };
     if (!dropTargetBounds) {
       return;
@@ -75,43 +67,32 @@ export default function Card({
       const foundationStoreCopy = [...foundationStore];
       newFoundation.cards = [...newFoundation.cards, card];
       foundationStoreCopy[dropTargetIndex] = newFoundation;
+
       updateFoundationStore(foundationStoreCopy);
       removeCardFromTableau();
     } else {
       console.log("invalid drop");
     }
-    //need to reset dropTargetValues to undefined
   }
 
   return (
-    <AnimatePresence exitBeforeEnter>
-      {facedown ? (
-        <CardBack
-          offset={`${i * 5}px`}
-          key={"back"}
-          exit={{ rotateY: 90, translateX: -40, scale: 1.1 }}
-          transition={{ duration: 0.2 }}
-        />
-      ) : (
-        <CardFront
-          foundation={foundation}
-          key={"front"}
-          offset={`${i * 5}px`}
-          drag
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
-          dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-          dragElastic={1}
-        >
-          <p className="cardValue">{card.value}</p>
-          <p className="cardSuit">{card.suit}</p>
-        </CardFront>
-      )}
-    </AnimatePresence>
+    <CardFrontStyle
+      foundation={foundation}
+      key={"front"}
+      offset={`${i * 5}px`}
+      drag
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+      dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+      dragElastic={1}
+    >
+      <p className="cardValue">{card.value}</p>
+      <p className="cardSuit">{card.suit}</p>
+    </CardFrontStyle>
   );
 }
 
-const CardFront = styled(motion.div)`
+const CardFrontStyle = styled(motion.div)`
   position: absolute;
   left: ${(props) => props.offset};
   width: var(--cardWidth);
@@ -124,7 +105,6 @@ const CardFront = styled(motion.div)`
   grid-template-rows: repeat(2, 50px);
   place-items: center;
   border-radius: 5px;
-  opacity: ${(props) => (props.hidden ? 0.01 : 1)};
   backface-visibility: hidden;
   z-index: ${(props) => (props.foundation ? 0 : 100)};
 
@@ -132,17 +112,4 @@ const CardFront = styled(motion.div)`
   .cardValue {
     font-size: 25px;
   }
-`;
-
-const CardBack = styled(motion.div)`
-  position: absolute;
-  left: ${(props) => props.offset};
-  width: var(--cardWidth);
-  height: var(--cardHeight);
-  border-radius: 5px;
-  border: 1px solid black;
-  background-color: aqua;
-  /* transition: transform 0.8s; */
-  transform-style: preserve-3d;
-  /* backface-visibility: hidden; */
 `;

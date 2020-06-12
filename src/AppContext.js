@@ -3,14 +3,13 @@ import { useDeal as deal } from "./useDeal";
 const AppContext = createContext(null);
 
 function AppStateProvider({ children }) {
-  const [draggedCard, setDraggedCard] = useState({ card: null, from: null });
   const [foundationStore, updateFoundationStore] = useState([]);
   const [tableauStore, updateTableauStore] = useState();
   const [stockStore, updateStock] = useState();
   const [discardPile, updateDiscardPile] = useState([]);
   const [foundationStartValue, setStartValue] = useState();
   const [suitPlacements, updateSuitPlacements] = useState({});
-  const [foundationRefs, setFoundationRefs] = useState([]);
+  const [gameNumber, setGameNumber] = useState(1);
 
   function dealNewGame() {
     const { foundations, stock, tableaus, startValue } = deal();
@@ -19,6 +18,8 @@ function AppStateProvider({ children }) {
     updateStock(stock);
     updateDiscardPile([]);
     setStartValue(startValue);
+    updateSuitPlacements({});
+    setGameNumber((gameNumber) => (gameNumber += 1));
   }
 
   useEffect(dealNewGame, []);
@@ -26,8 +27,6 @@ function AppStateProvider({ children }) {
   return (
     <AppContext.Provider
       value={{
-        draggedCard,
-        setDraggedCard,
         foundationStore,
         updateFoundationStore,
         tableauStore,
@@ -40,8 +39,7 @@ function AppStateProvider({ children }) {
         suitPlacements,
         updateSuitPlacements,
         foundationStartValue,
-        foundationRefs,
-        setFoundationRefs,
+        gameNumber,
       }}
     >
       {children}
@@ -51,7 +49,6 @@ function AppStateProvider({ children }) {
 
 function useAppState() {
   const allState = useContext(AppContext);
-  // console.log("context:", allState);
   return allState;
 }
 

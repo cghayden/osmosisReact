@@ -71,7 +71,7 @@ function useDeal() {
     const stock = shuffledDeck;
     stock.forEach((card) => (card.startLocation = "s"));
     // return foundations and stock to pass down to Table
-    const startValue = foundations[0].value;
+    const startValue = foundations[0].cards[0].value;
     return {
       foundations,
       stock,

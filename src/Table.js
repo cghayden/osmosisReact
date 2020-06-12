@@ -4,20 +4,17 @@ import TableauPile from "./TableauPile";
 import FoundationRow from "./FoundationRow";
 import StockRow from "./StockRow";
 import { useAppState } from "./AppContext";
-// import { useDeal } from "./useDeal";
 
 export default function Table() {
-  const { foundationStore, tableauStore, dealNewGame } = useAppState();
-  // console.log("foundationStore:", foundationStore);
+  const { foundationStore, tableauStore = {}, dealNewGame } = useAppState();
 
   return (
     <TableLayout>
       <TableauColumn>
         <button onClick={() => dealNewGame()}>New Game</button>
-        {tableauStore &&
-          Object.keys(tableauStore).map((key) => (
-            <TableauPile key={key} cards={tableauStore[key]} />
-          ))}
+        {Object.keys(tableauStore).map((key) => (
+          <TableauPile key={key} cards={tableauStore[key]} />
+        ))}
       </TableauColumn>
       <div>
         {foundationStore.map((foundation, i) => (

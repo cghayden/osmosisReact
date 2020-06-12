@@ -1,5 +1,6 @@
 import React from "react";
-import Card from "./Card";
+import CardFront from "./CardFront";
+
 export default function StockRow() {
   const stock = [
     { suit: "h", value: 0 },
@@ -18,12 +19,12 @@ export default function StockRow() {
     <div className="cardRow stockRow">
       <div className="cardPileAnchor stockPile">
         {stock.map((card, i) => (
-          <Card key={i} faceDown i={i} card={card} />
+          <CardFront key={i} i={i} card={card} />
         ))}
       </div>
       <div className="cardPileAnchor">
         {discardPile.map((card, i) => (
-          <Card key={i} card={card} i={i} />
+          <CardFront key={i} card={card} i={i} />
         ))}
       </div>
     </div>
