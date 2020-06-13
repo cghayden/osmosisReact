@@ -9,7 +9,7 @@ export default function TableauPile({ cards = [] }) {
           if (i === cards.length - 1) {
             return <Card key={i} i={i} card={card} />;
           } else {
-            return <Card facedown={true} key={i} i={i} />;
+            return <Card facedown={true} key={i} i={i} card={card} />;
           }
         })}
       </div>

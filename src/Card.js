@@ -79,18 +79,23 @@ export default function Card({ facedown = false, i, card }) {
   }
 
   return (
-    <AnimatePresence exitBeforeEnter>
+    <AnimatePresence exitBeforeEnter initial={false}>
       {facedown ? (
         <CardBack
           offset={`${i * 5}px`}
-          key={"back"}
+          key={"b"}
+          // initial={{ rotateY: 0 }}
+          // animate={{ rotateY: 0 }}
           exit={{ rotateY: 90, translateX: -40, scale: 1.1 }}
           transition={{ duration: 0.2 }}
         />
       ) : (
         <CardFront
-          key={"front"}
+          key={"f"}
           offset={`${i * 5}px`}
+          // initial={{ rotateY: 0 }}
+          // animate={{ rotateY: 0 }}
+          exit={{ rotateY: 0 }}
           drag
           onDragStart={handleDragStart}
           onDragEnd={handleDragEnd}
