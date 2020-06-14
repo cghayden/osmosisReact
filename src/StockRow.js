@@ -10,11 +10,13 @@ export default function StockRow() {
   return (
     <div className="cardRow stockRow">
       <div className="cardPileAnchor stockPile">
-        <AnimatePresence>
-          {[...stock].splice(stock.length - 4).map((card, i) => {
-            return <StockCardBack i={i} key={card.uid} facedown={true} />;
-          })}
-        </AnimatePresence>
+        {[...stock].splice(stock.length - 4).map((card, i) => {
+          return (
+            <AnimatePresence>
+              <StockCardBack i={i} key={card.uid} />;
+            </AnimatePresence>
+          );
+        })}
       </div>
       <div className="cardPileAnchor">
         {discardPile.map((card, i) => {

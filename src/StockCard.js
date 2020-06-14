@@ -88,7 +88,14 @@ export default function Card({ facedown = false, i, card }) {
     <StockCardFront
       key={"f"}
       offset={`${i * 2}px`}
-      exit={{ rotateY: 0 }}
+      initial={{ rotateY: -90, translateX: -30 }}
+      animate={{
+        rotateY: 0,
+        translateX: 0,
+        transition: { delay: 0.1, duration: 0.1 },
+      }}
+      exit={{ rotateY: 0, translateX: 0 }}
+      // transition={{ delay: 1 }}
       drag
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
@@ -114,7 +121,7 @@ const StockCardFront = styled(motion.div)`
   grid-template-rows: repeat(2, 50px);
   place-items: center;
   border-radius: 5px;
-  backface-visibility: hidden;
+  /* backface-visibility: hidden; */
   z-index: 100;
 
   .cardSuit,

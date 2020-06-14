@@ -3,6 +3,18 @@ import styled from "styled-components";
 import { motion } from "framer-motion";
 import { useAppState } from "./AppContext";
 
+const cardBackVariants = {
+  enter: { rotateY: 0 },
+  inPlace: { rotateY: 0 },
+  flip: {
+    rotateY: 90,
+    translateX: 50,
+    scale: 1.05,
+    zIndex: 2000,
+    backgroundColor: `#247f7f`,
+  },
+};
+
 export default function Card({ facedown = false, i, card }) {
   const { discardPile, updateDiscardPile, stock, updateStock } = useAppState();
 
@@ -41,11 +53,11 @@ export default function Card({ facedown = false, i, card }) {
   return (
     <StockCardBack
       offset={`${i * 2}px`}
-      // key={id}
-      initial={{ rotateY: 0 }}
-      animate={{ rotateY: 0 }}
-      exit={{ rotateY: 90, translateX: 80, scale: 1.1 }}
-      transition={{ duration: 1 }}
+      variants={cardBackVariants}
+      initial="enter"
+      animate="inPlace"
+      exit="flip"
+      transition={{ duration: 0.1 }}
       onClick={flip1}
     />
   );
@@ -58,7 +70,7 @@ const StockCardBack = styled(motion.div)`
   height: var(--cardHeight);
   border-radius: 5px;
   border: 1px solid black;
-  background-color: aqua;
+  background-color: var(--cardBack);
   transform-style: preserve-3d;
-  /* backface-visibility: hidden; */
+  backface-visibility: visible;
 `;
