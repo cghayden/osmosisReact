@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useAppState } from "./AppContext";
 
 export default function Card({ facedown = false, i, card }) {
@@ -11,14 +11,14 @@ export default function Card({ facedown = false, i, card }) {
     foundationStore,
     updateFoundationStore,
     foundationStartValue,
-    tableauStore,
-    updateTableauStore,
+    discardPile,
+    updateDiscardPile,
   } = useAppState();
 
-  function removeCardFromTableau() {
-    const tableauCopy = { ...tableauStore };
-    tableauCopy[card.startLocation].pop();
-    updateTableauStore(tableauCopy);
+  function removeCardFromDiscardPile() {
+    const discardPileCopy = [...discardPile];
+    discardPileCopy.pop();
+    updateDiscardPile(discardPileCopy);
   }
 
   function setDropTargetValues() {
@@ -77,7 +77,7 @@ export default function Card({ facedown = false, i, card }) {
       newFoundation.cards = [...newFoundation.cards, card];
       foundationStoreCopy[dropTargetIndex] = newFoundation;
       updateFoundationStore(foundationStoreCopy);
-      removeCardFromTableau();
+      removeCardFromDiscardPile();
     } else {
       console.log("invalid drop");
     }
@@ -85,38 +85,23 @@ export default function Card({ facedown = false, i, card }) {
   }
 
   return (
-    <AnimatePresence exitBeforeEnter initial={false}>
-      {facedown ? (
-        <CardBack
-          offset={`${i * 5}px`}
-          key={"b"}
-          // initial={{ rotateY: 0 }}
-          // animate={{ rotateY: 0 }}
-          exit={{ rotateY: 90, translateX: -40, scale: 1.1 }}
-          transition={{ duration: 0.2 }}
-        />
-      ) : (
-        <CardFront
-          key={"f"}
-          offset={`${i * 5}px`}
-          // initial={{ rotateY: 0 }}
-          // animate={{ rotateY: 0 }}
-          exit={{ rotateY: 0 }}
-          drag
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
-          dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-          dragElastic={1}
-        >
-          <p className="cardValue">{card.value}</p>
-          <p className="cardSuit">{card.suit}</p>
-        </CardFront>
-      )}
-    </AnimatePresence>
+    <StockCardFront
+      key={"f"}
+      offset={`${i * 2}px`}
+      exit={{ rotateY: 0 }}
+      drag
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+      dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+      dragElastic={1}
+    >
+      <p className="cardValue">{card.value}</p>
+      <p className="cardSuit">{card.suit}</p>
+    </StockCardFront>
   );
 }
 
-const CardFront = styled(motion.div)`
+const StockCardFront = styled(motion.div)`
   position: absolute;
   left: ${(props) => props.offset};
   width: var(--cardWidth);
@@ -136,17 +121,4 @@ const CardFront = styled(motion.div)`
   .cardValue {
     font-size: 25px;
   }
-`;
-
-const CardBack = styled(motion.div)`
-  position: absolute;
-  left: ${(props) => props.offset};
-  width: var(--cardWidth);
-  height: var(--cardHeight);
-  border-radius: 5px;
-  border: 1px solid black;
-  background-color: aqua;
-  /* transition: transform 0.8s; */
-  transform-style: preserve-3d;
-  /* backface-visibility: hidden; */
 `;
