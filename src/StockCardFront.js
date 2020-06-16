@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import { useAppState } from "./AppContext";
-
-export default function Card({ facedown = false, i, card }) {
+import CardFont from "./CardFont";
+export default function StockCardFront({ facedown = false, i, card }) {
   const [dropTargetBounds, setDropTargetBounds] = useState();
   const [dropTargetIndex, setDropTargetIndex] = useState();
 
@@ -85,30 +85,35 @@ export default function Card({ facedown = false, i, card }) {
   }
 
   return (
-    <StockCardFront
+    <StockCardFrontStyle
       key={"f"}
       offset={`${i * 2}px`}
-      initial={{ rotateY: -90, translateX: -30 }}
+      // custom={i}
+      initial={{ rotateY: -90, scale: 1.1, translateX: -30 }}
       animate={{
         rotateY: 0,
         translateX: 0,
+        scale: 1,
         transition: { delay: 0.1, duration: 0.1 },
       }}
       exit={{ rotateY: 0, translateX: 0 }}
-      // transition={{ delay: 1 }}
       drag
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
       dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
       dragElastic={1}
     >
-      <p className="cardValue">{card.value}</p>
-      <p className="cardSuit">{card.suit}</p>
-    </StockCardFront>
+      <CardFont red={card.suit === "\u{2665}" || card.suit === "\u{2666}"}>
+        {card.value}
+      </CardFont>
+      <CardFont red={card.suit === "\u{2665}" || card.suit === "\u{2666}"}>
+        {card.suit}
+      </CardFont>
+    </StockCardFrontStyle>
   );
 }
 
-const StockCardFront = styled(motion.div)`
+const StockCardFrontStyle = styled(motion.div)`
   position: absolute;
   left: ${(props) => props.offset};
   width: var(--cardWidth);

@@ -1,5 +1,6 @@
+// 2660 = spades, 2663 = clubs, 2665 = hearts, 2666 = diamonds
 function useDeal() {
-  const suits = ["h", "d", "s", "c"];
+  const suits = ["\u{2660}", "\u{2663}", "\u{2665}", "\u{2666}"];
   const values = [
     "a",
     "2",

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAppState } from "./AppContext";
-
+import CardFont from "./CardFont";
 export default function Card({ facedown = false, i, card }) {
   const [dropTargetBounds, setDropTargetBounds] = useState();
   const [dropTargetIndex, setDropTargetIndex] = useState();
@@ -108,8 +108,12 @@ export default function Card({ facedown = false, i, card }) {
           dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
           dragElastic={1}
         >
-          <p className="cardValue">{card.value}</p>
-          <p className="cardSuit">{card.suit}</p>
+          <CardFont red={card.suit === "\u{2665}" || card.suit === "\u{2666}"}>
+            {card.value}
+          </CardFont>
+          <CardFont red={card.suit === "\u{2665}" || card.suit === "\u{2666}"}>
+            {card.suit}
+          </CardFont>
         </CardFront>
       )}
     </AnimatePresence>
@@ -131,11 +135,6 @@ const CardFront = styled(motion.div)`
   border-radius: 5px;
   backface-visibility: hidden;
   z-index: 100;
-
-  .cardSuit,
-  .cardValue {
-    font-size: 25px;
-  }
 `;
 
 const CardBack = styled(motion.div)`

@@ -1,12 +1,16 @@
 import React from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
-
+import CardFont from "./CardFont";
 export default function CardFrontOnly({ i, card }) {
   return (
     <CardFrontStyle offset={`${i * 10}px`}>
-      <p className="cardValue">{card.value}</p>
-      <p className="cardSuit">{card.suit}</p>
+      <CardFont red={card.suit === "\u{2665}" || card.suit === "\u{2666}"}>
+        {card.value}
+      </CardFont>
+      <CardFont red={card.suit === "\u{2665}" || card.suit === "\u{2666}"}>
+        {card.suit}
+      </CardFont>
     </CardFrontStyle>
   );
 }
@@ -25,9 +29,4 @@ const CardFrontStyle = styled(motion.div)`
   place-items: center;
   border-radius: 5px;
   backface-visibility: hidden;
-
-  .cardSuit,
-  .cardValue {
-    font-size: 25px;
-  }
 `;

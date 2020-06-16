@@ -1,6 +1,6 @@
 import React from "react";
 import { AnimatePresence } from "framer-motion";
-import StockCard from "./StockCard";
+import StockCardFront from "./StockCardFront";
 import StockCardBack from "./StockCardBack";
 import { useAppState } from "./AppContext";
 
@@ -10,17 +10,15 @@ export default function StockRow() {
   return (
     <div className="cardRow stockRow">
       <div className="cardPileAnchor stockPile">
-        {[...stock].splice(stock.length - 4).map((card, i) => {
-          return (
-            <AnimatePresence>
-              <StockCardBack i={i} key={card.uid} />;
-            </AnimatePresence>
-          );
-        })}
+        <AnimatePresence>
+          {[...stock].splice(stock.length - 4).map((card, i) => (
+            <StockCardBack key={card.uid} i={i} card={card} />
+          ))}
+        </AnimatePresence>
       </div>
       <div className="cardPileAnchor">
         {discardPile.map((card, i) => {
-          return <StockCard key={card.uid} i={i} card={card} />;
+          return <StockCardFront key={card.uid} i={i} card={card} />;
         })}
       </div>
     </div>

@@ -9,7 +9,7 @@ const cardBackVariants = {
   flip: {
     rotateY: 90,
     translateX: 50,
-    scale: 1.05,
+    scale: 1.1,
     zIndex: 2000,
     backgroundColor: `#247f7f`,
   },
@@ -52,6 +52,7 @@ export default function Card({ facedown = false, i, card }) {
 
   return (
     <StockCardBack
+      key={card.uid}
       offset={`${i * 2}px`}
       variants={cardBackVariants}
       initial="enter"
