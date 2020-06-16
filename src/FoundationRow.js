@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import { useAppState } from "./AppContext";
 import { motion } from "framer-motion";
-import CardFrontOnly from "./CardFrontOnly";
+import FoundationCard from "./FoundationCard";
 
 export default function FoundationRow({ foundationIndex, cards }) {
   let rowRef = useRef();
@@ -20,7 +20,7 @@ export default function FoundationRow({ foundationIndex, cards }) {
     <motion.div ref={rowRef} className="cardRow" id={`f${foundationIndex}`}>
       <div className="cardPileAnchor">
         {cards.map((card, i) => (
-          <CardFrontOnly key={card.uid} card={card} i={i} />
+          <FoundationCard key={card.uid} card={card} i={i} />
         ))}
       </div>
     </motion.div>

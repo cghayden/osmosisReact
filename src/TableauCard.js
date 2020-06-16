@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAppState } from "./AppContext";
-import CardFont from "./CardFont";
-export default function Card({ facedown = false, i, card }) {
+import { CardFront, CardFont } from "./CardStyles";
+
+export default function TableauCard({ facedown = false, i, card }) {
   const [dropTargetBounds, setDropTargetBounds] = useState();
   const [dropTargetIndex, setDropTargetIndex] = useState();
 
@@ -88,19 +89,15 @@ export default function Card({ facedown = false, i, card }) {
     <AnimatePresence exitBeforeEnter initial={false}>
       {facedown ? (
         <CardBack
-          offset={`${i * 5}px`}
+          offset={`${i * 2}px`}
           key={"b"}
-          // initial={{ rotateY: 0 }}
-          // animate={{ rotateY: 0 }}
           exit={{ rotateY: 90, translateX: -40, scale: 1.1 }}
           transition={{ duration: 0.2 }}
         />
       ) : (
         <CardFront
           key={"f"}
-          offset={`${i * 5}px`}
-          // initial={{ rotateY: 0 }}
-          // animate={{ rotateY: 0 }}
+          offset={`${i * 2}px`}
           exit={{ rotateY: 0 }}
           drag
           onDragStart={handleDragStart}
@@ -120,23 +117,6 @@ export default function Card({ facedown = false, i, card }) {
   );
 }
 
-const CardFront = styled(motion.div)`
-  position: absolute;
-  left: ${(props) => props.offset};
-  width: var(--cardWidth);
-  height: var(--cardHeight);
-  border-radius: 5px;
-  border: 1px solid black;
-  background: white;
-  color: black;
-  display: grid;
-  grid-template-rows: repeat(2, 50px);
-  place-items: center;
-  border-radius: 5px;
-  backface-visibility: hidden;
-  z-index: 100;
-`;
-
 const CardBack = styled(motion.div)`
   position: absolute;
   left: ${(props) => props.offset};
@@ -145,7 +125,5 @@ const CardBack = styled(motion.div)`
   border-radius: 5px;
   border: 1px solid black;
   background-color: aqua;
-  /* transition: transform 0.8s; */
   transform-style: preserve-3d;
-  /* backface-visibility: hidden; */
 `;

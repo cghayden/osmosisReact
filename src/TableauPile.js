@@ -1,5 +1,5 @@
 import React from "react";
-import Card from "./Card";
+import TableauCard from "./TableauCard";
 
 export default function TableauPile({ cards = [] }) {
   return (
@@ -7,9 +7,9 @@ export default function TableauPile({ cards = [] }) {
       <div className="cardPileAnchor">
         {cards.map((card, i) => {
           if (i === cards.length - 1) {
-            return <Card key={i} i={i} card={card} />;
+            return <TableauCard key={i} i={i} card={card} />;
           } else {
-            return <Card key={i} i={i} card={card} facedown={true} />;
+            return <TableauCard key={i} i={i} card={card} facedown={true} />;
           }
         })}
       </div>
