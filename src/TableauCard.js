@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAppState } from "./AppContext";
-import { CardFront, CardFont } from "./CardStyles";
+import { CardFront, CardFont, FullCardFaceDiv, CardCorner } from "./CardStyles";
 
 export default function TableauCard({ facedown = false, i, card }) {
   const [dropTargetBounds, setDropTargetBounds] = useState();
@@ -96,6 +96,7 @@ export default function TableauCard({ facedown = false, i, card }) {
         />
       ) : (
         <CardFront
+          red={card.suit === "\u{2665}" || card.suit === "\u{2666}"}
           key={"f"}
           offset={`${i * 2}px`}
           exit={{ rotateY: 0 }}
@@ -105,12 +106,14 @@ export default function TableauCard({ facedown = false, i, card }) {
           dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
           dragElastic={1}
         >
-          <CardFont red={card.suit === "\u{2665}" || card.suit === "\u{2666}"}>
-            {card.value}
-          </CardFont>
-          <CardFont red={card.suit === "\u{2665}" || card.suit === "\u{2666}"}>
-            {card.suit}
-          </CardFont>
+          <CardCorner>
+            <p>{card.value}</p>
+            <p>{card.suit}</p>
+          </CardCorner>
+          <FullCardFaceDiv>
+            <CardFont>{card.value}</CardFont>
+            <CardFont>{card.suit}</CardFont>
+          </FullCardFaceDiv>
         </CardFront>
       )}
     </AnimatePresence>

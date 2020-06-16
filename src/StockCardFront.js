@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useAppState } from "./AppContext";
-import { CardFront, CardFont } from "./CardStyles";
+import { CardFront, CardFont, FullCardFaceDiv, CardCorner } from "./CardStyles";
 export default function StockCardFront({ facedown = false, i, card }) {
   const [dropTargetBounds, setDropTargetBounds] = useState();
   const [dropTargetIndex, setDropTargetIndex] = useState();
@@ -84,6 +84,7 @@ export default function StockCardFront({ facedown = false, i, card }) {
 
   return (
     <CardFront
+      red={card.suit === "\u{2665}" || card.suit === "\u{2666}"}
       key={"f"}
       offset={`${i * 2}px`}
       // custom={i}
@@ -101,12 +102,14 @@ export default function StockCardFront({ facedown = false, i, card }) {
       dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
       dragElastic={1}
     >
-      <CardFont red={card.suit === "\u{2665}" || card.suit === "\u{2666}"}>
-        {card.value}
-      </CardFont>
-      <CardFont red={card.suit === "\u{2665}" || card.suit === "\u{2666}"}>
-        {card.suit}
-      </CardFont>
+      <CardCorner>
+        <p className="value">{card.value}</p>
+        <p className="suit">{card.suit}</p>
+      </CardCorner>
+      <FullCardFaceDiv>
+        <CardFont>{card.value}</CardFont>
+        <CardFont>{card.suit}</CardFont>
+      </FullCardFaceDiv>
     </CardFront>
   );
 }
