@@ -13,8 +13,8 @@ export default function CardFrontOnly({ i, card }) {
         <p>{card.suit}</p>
       </CardCorner>
       <FullCardFaceDiv>
-        <CardFont className="value">{card.value}</CardFont>
-        <CardFont className="suit">{card.suit}</CardFont>
+        <CardFont>{card.value}</CardFont>
+        <CardFont>{card.suit}</CardFont>
       </FullCardFaceDiv>
     </CardFront>
   );
