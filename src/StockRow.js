@@ -58,7 +58,7 @@ export default function StockRow() {
       flip2();
       return;
     }
-    if (stock.length > 3) {
+    if (stock.length > 3 || stock.length === 3) {
       console.log("flip3:");
       flip3();
       return;
