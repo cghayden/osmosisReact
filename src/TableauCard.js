@@ -1,9 +1,13 @@
 import React, { useState } from "react";
-import styled from "styled-components";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { useAppState } from "./AppContext";
-import { CardFront, CardFont, FullCardFaceDiv, CardCorner } from "./CardStyles";
-// import { setDropTargetValues } from "./setDropTarget";
+import {
+  CardFront,
+  CardFont,
+  FullCardFaceDiv,
+  CardCorner,
+  CardBack,
+} from "./CardStyles";
 export default function TableauCard({ facedown = false, i, card }) {
   const [dropTargetBounds, setDropTargetBounds] = useState();
   const [dropTargetIndex, setDropTargetIndex] = useState();
@@ -152,13 +156,3 @@ export default function TableauCard({ facedown = false, i, card }) {
     </AnimatePresence>
   );
 }
-const CardBack = styled(motion.div)`
-  position: absolute;
-  left: ${(props) => props.offset};
-  width: var(--cardWidth);
-  height: var(--cardHeight);
-  border-radius: 5px;
-  border: 1px solid black;
-  background-color: aqua;
-  transform-style: preserve-3d;
-`;

@@ -1,6 +1,5 @@
 import React from "react";
-import styled from "styled-components";
-import { motion } from "framer-motion";
+import { CardBack } from "./CardStyles";
 
 const cardBackVariants = {
   enter: { rotateY: 0 },
@@ -10,13 +9,13 @@ const cardBackVariants = {
     translateX: 50,
     scale: 1.1,
     zIndex: 2000,
-    background: "var(--cardFlipShadow)",
+    // background: "var(--cardFlipShadow)",
   },
 };
 
 export default function StockCardBack({ i, card }) {
   return (
-    <StockCardBackDiv
+    <CardBack
       key={card.uid}
       offset={`${i * 2}px`}
       variants={cardBackVariants}
@@ -28,15 +27,3 @@ export default function StockCardBack({ i, card }) {
     />
   );
 }
-
-const StockCardBackDiv = styled(motion.div)`
-  position: absolute;
-  left: ${(props) => props.offset};
-  width: var(--cardWidth);
-  height: var(--cardHeight);
-  border-radius: 5px;
-  border: 1px solid black;
-  background-color: var(--cardBack);
-  transform-style: preserve-3d;
-  backface-visibility: visible;
-`;
