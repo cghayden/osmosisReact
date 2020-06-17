@@ -3,6 +3,7 @@
   --cardWidth: 70px;
   --cardBack: #00ffff;
   --cardBackFlip: #247f7f;
+  --stockPlaceHolder: hsl(0, 0%, 83%);
 }
 body {
   background-color: green;

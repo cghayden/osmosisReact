@@ -135,7 +135,7 @@ export default function TableauCard({ facedown = false, i, card }) {
           exit={{ rotateY: 0 }}
           drag
           onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
+          onDragEnd={(e) => handleDragEnd(e, "tableau")}
           dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
           dragElastic={1}
         >
