@@ -5,7 +5,7 @@ const AppContext = createContext(null);
 function AppStateProvider({ children }) {
   const [foundationStore, updateFoundationStore] = useState([]);
   const [tableauStore, updateTableauStore] = useState();
-  const [stock, updateStock] = useState();
+  const [stock, updateStock] = useState([]);
   const [discardPile, updateDiscardPile] = useState([]);
   const [foundationStartValue, setStartValue] = useState();
   const [suitPlacements, updateSuitPlacements] = useState({});

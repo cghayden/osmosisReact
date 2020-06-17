@@ -24,6 +24,7 @@ export default function StockCardBack({ i, card }) {
       animate="inPlace"
       exit="flip"
       transition={{ duration: 0.1 }}
+      positionTransition
     />
   );
 }
