@@ -18,11 +18,23 @@ export default function StockRow() {
     updateStock(newStock);
     updateDiscardPile([]);
   }
+  function flip1() {
+    if (stock.length < 1) {
+      resetStock();
+      return;
+    }
+    const stockCopy = [...stock];
+    const discardPileCopy = [...discardPile];
+    const next1 = stockCopy.splice(stockCopy.length - 1);
+    updateDiscardPile([...discardPileCopy, ...next1]);
+    updateStock(stockCopy);
+    return;
+  }
 
   return (
     <div className="cardRow stockRow">
-      <div className="cardPileAnchor stockPile">
-        <EmptyStock onClick={resetStock} />
+      <div className="cardPileAnchor stockPile" onClick={flip1}>
+        <EmptyStock />
         <AnimatePresence>
           {[...stock].splice(stock.length - 4).map((card, i) => (
             <StockCardBack key={card.uid} i={i} card={card} />
