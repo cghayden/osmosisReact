@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAppState } from "./AppContext";
 import { CardFront, CardFont, FullCardFaceDiv, CardCorner } from "./CardStyles";
-
+// import { setDropTargetValues } from "./setDropTarget";
 export default function TableauCard({ facedown = false, i, card }) {
   const [dropTargetBounds, setDropTargetBounds] = useState();
   const [dropTargetIndex, setDropTargetIndex] = useState();
@@ -14,55 +14,29 @@ export default function TableauCard({ facedown = false, i, card }) {
     foundationStartValue,
     tableauStore,
     updateTableauStore,
+    discardPile,
+    updateDiscardPile,
   } = useAppState();
-
-  function removeCardFromTableau() {
-    const tableauCopy = { ...tableauStore };
-    tableauCopy[card.startLocation].pop();
-    updateTableauStore(tableauCopy);
-  }
-
-  function setDropTargetValues() {
-    //options: 1. =startValue, set in a new foundationRow
-    if (card.value === foundationStartValue) {
-      const nextFoundationIndex = foundationStore.findIndex(
-        (el) => el.suit === null
-      );
-      console.log("nextFoundationIndex:", nextFoundationIndex);
-      const targetFoundation = foundationStore[nextFoundationIndex];
-      console.log("nextFoundation bounds:", targetFoundation.bounds);
-      setDropTargetIndex(nextFoundationIndex);
-      setDropTargetBounds(targetFoundation.bounds);
-      return;
-    }
-    //2. suit already has a row... find suit foundation index and bounds
-    const existingFoundation = foundationStore.find(
-      (el) => el.suit === card.suit
-    );
-    if (existingFoundation) {
-      const foundationIndex = foundationStore.findIndex(
-        (el) => el.suit === card.suit
-      );
-      setDropTargetIndex(foundationIndex);
-      setDropTargetBounds(existingFoundation.bounds);
-    }
-    //3.  value not starter and suit not in a row.
-    else {
-      setDropTargetIndex(null);
-      setDropTargetBounds(null);
-    }
-    return;
-  }
 
   function handleDragStart(e, info) {
     setDropTargetValues();
   }
+  function handleDragEnd(e, source) {
+    function removeCardFromTableau() {
+      const tableauCopy = { ...tableauStore };
+      tableauCopy[card.startLocation].pop();
+      updateTableauStore(tableauCopy);
+    }
+    function removeCardFromDiscardPile() {
+      const discardPileCopy = [...discardPile];
+      discardPileCopy.pop();
+      updateDiscardPile(discardPileCopy);
+    }
 
-  function handleDragEnd(e, info) {
-    const dropPosition = { x: ~~e.clientX, y: ~~e.clientY };
     if (!dropTargetBounds) {
       return;
     }
+    const dropPosition = { x: ~~e.clientX, y: ~~e.clientY };
 
     if (
       dropTargetBounds.left < dropPosition.x &&
@@ -72,17 +46,76 @@ export default function TableauCard({ facedown = false, i, card }) {
     ) {
       const newFoundation = { ...foundationStore[dropTargetIndex] };
       const foundationStoreCopy = [...foundationStore];
-      if (!foundationStoreCopy.suit) {
-        foundationStoreCopy.suit = card.suit;
+      if (!newFoundation.suit) {
+        newFoundation.suit = card.suit;
       }
       newFoundation.cards = [...newFoundation.cards, card];
       foundationStoreCopy[dropTargetIndex] = newFoundation;
       updateFoundationStore(foundationStoreCopy);
-      removeCardFromTableau();
+      if (source === "discard") {
+        removeCardFromDiscardPile();
+      }
+      if (source === "tableau") {
+        removeCardFromTableau();
+      }
     } else {
-      console.log("invalid drop");
+      return;
     }
     //need to reset dropTargetValues to undefined
+  }
+
+  function setDropTargetValues() {
+    //options: 1. =startValue, set in a new foundationRow
+    if (card.value === foundationStartValue) {
+      const nextFoundationIndex = foundationStore.findIndex(
+        (el) => el.suit === null
+      );
+
+      const targetFoundation = foundationStore[nextFoundationIndex];
+      setDropTargetIndex(nextFoundationIndex);
+      setDropTargetBounds(targetFoundation.bounds);
+      return;
+    }
+    //2. suit already has a row... find suit foundation index and bounds
+    const existingFoundationIndex = foundationStore.findIndex(
+      (el) => el.suit === card.suit
+    );
+    if (existingFoundationIndex === -1) {
+      // no drop values set
+      setDropTargetIndex();
+      setDropTargetBounds();
+      return;
+    }
+    if (existingFoundationIndex === 0) {
+      const existingFoundation = foundationStore.find(
+        (el) => el.suit === card.suit
+      );
+      setDropTargetIndex(existingFoundationIndex);
+      setDropTargetBounds(existingFoundation.bounds);
+      return;
+    }
+    //if existing index is 1,
+    if (existingFoundationIndex > 0) {
+      //check if  previous foundation has the dragged card's value:
+      const previousFoundationHasValue = foundationStore[
+        existingFoundationIndex - 1
+      ].cards.filter(
+        (previousFoundationCard) => previousFoundationCard.value === card.value
+      );
+      if (previousFoundationHasValue.length > 0) {
+        const existingFoundation = foundationStore.find(
+          (el) => el.suit === card.suit
+        );
+        setDropTargetIndex(existingFoundationIndex);
+        setDropTargetBounds(existingFoundation.bounds);
+      }
+    }
+    //3.  value not starter and suit not in a row.
+    else {
+      setDropTargetIndex(null);
+      setDropTargetBounds(null);
+    }
+    return;
   }
 
   return (
@@ -119,7 +152,6 @@ export default function TableauCard({ facedown = false, i, card }) {
     </AnimatePresence>
   );
 }
-
 const CardBack = styled(motion.div)`
   position: absolute;
   left: ${(props) => props.offset};

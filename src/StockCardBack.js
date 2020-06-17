@@ -18,29 +18,30 @@ const cardBackVariants = {
 export default function Card({ facedown = false, i, card }) {
   const { discardPile, updateDiscardPile, stock, updateStock } = useAppState();
 
-  function nextThreeCards() {
-    const stockCopy = [...stock];
-    const discardPileCopy = [...discardPile];
-    if (stock.length > 2) {
-      const next3 = stockCopy.splice(stockCopy.length - 3);
-      console.log("spliced stockCopy:", stockCopy);
-      updateDiscardPile([...discardPileCopy, ...next3]);
-      updateStock(stockCopy);
-      return;
-    }
-    if (stock.length === 2) {
-      console.log("flip last 2");
-    }
-    if (stock.length === 1) {
-      const next1 = stockCopy.splice(stockCopy.length - 1);
-      updateDiscardPile([...discardPileCopy, ...next1]);
-      updateStock(stockCopy);
-      return;
-    }
-    if (stock.length === 0) {
-      console.log("flip discard pile back to stock");
-    }
-  }
+  // function nextThreeCards() {
+  //   const stockCopy = [...stock];
+  //   const discardPileCopy = [...discardPile];
+  //   if (stock.length > 2) {
+  //     const next3 = stockCopy.splice(stockCopy.length - 3);
+  //     console.log("spliced stockCopy:", stockCopy);
+  //     updateDiscardPile([...discardPileCopy, ...next3]);
+  //     updateStock(stockCopy);
+  //     return;
+  //   }
+  //   if (stock.length === 2) {
+  //     console.log("flip last 2");
+  //   }
+  //   if (stock.length === 1) {
+  //     const next1 = stockCopy.splice(stockCopy.length - 1);
+  //     updateDiscardPile([...discardPileCopy, ...next1]);
+  //     updateStock(stockCopy);
+  //     return;
+  //   }
+  //   if (stock.length === 0) {
+  //     console.log("flip discard pile back to stock");
+  //   }
+  // }
+
   function flip1() {
     const stockCopy = [...stock];
     const discardPileCopy = [...discardPile];

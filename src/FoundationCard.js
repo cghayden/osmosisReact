@@ -6,7 +6,7 @@ export default function CardFrontOnly({ i, card }) {
     <CardFront
       red={card.suit === "\u{2665}" || card.suit === "\u{2666}"}
       foundation={true}
-      offset={`${i * 10}px`}
+      offset={`${i * 17}px`}
     >
       <CardCorner>
         <p>{card.value}</p>
