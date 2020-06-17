@@ -10,7 +10,7 @@ const cardBackVariants = {
     translateX: 50,
     scale: 1.1,
     zIndex: 2000,
-    backgroundColor: `#247f7f`,
+    background: "var(--cardFlipShadow)",
   },
 };
 
@@ -23,7 +23,7 @@ export default function StockCardBack({ i, card }) {
       initial="enter"
       animate="inPlace"
       exit="flip"
-      transition={{ duration: 0.1 }}
+      transition={{ duration: 0.2 }}
       positionTransition
     />
   );

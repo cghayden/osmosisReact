@@ -1,9 +1,8 @@
 :root {
   --cardHeight: 100px;
   --cardWidth: 70px;
-  --cardBack: #00ffff;
-  --cardBackFlip: #247f7f;
-  --stockPlaceHolder: hsl(0, 0%, 83%);
+  --cardBack: #00b7ff;
+  --cardFlipShadow: #20637e;
 }
 body {
   background-color: green;
