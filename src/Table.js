@@ -3,6 +3,7 @@ import styled from "styled-components";
 import TableauPile from "./TableauPile";
 import FoundationRow from "./FoundationRow";
 import StockRow from "./StockRow";
+import NewStockRow from "./NewStockRow";
 import { useAppState } from "./AppContext";
 
 export default function Table() {
@@ -21,7 +22,8 @@ export default function Table() {
           <FoundationRow key={i} cards={foundation.cards} foundationIndex={i} />
         ))}
       </div>
-      <StockRow />
+      {/* <StockRow /> */}
+      <NewStockRow />
     </TableLayout>
   );
 }
