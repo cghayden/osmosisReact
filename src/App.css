@@ -19,7 +19,7 @@ body {
 }
 
 .cardPileAnchor {
-  background-color: lightgray;
+  /* background-color: lightgray; */
   border-radius: 5px;
   position: relative;
   width: var(--cardWidth);

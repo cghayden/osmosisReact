@@ -10,13 +10,12 @@ export default function StockRow() {
     discardPile,
     updateDiscardPile,
     updateStock,
-    wholeShuffledDeck,
     tableauStore,
     updateTableauStore,
-    updateWholeDeck,
     setDealing,
-    stockBounds,
     setStockBounds,
+    updateFoundationStore,
+    setStartValue,
   } = useAppState();
 
   let stockRef = useRef();
@@ -62,21 +61,43 @@ export default function StockRow() {
     }
   }
 
+  function delay() {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve("one card dealt");
+      }, 1000);
+    });
+  }
   function timedDeal() {
-    const deckCopy = [...wholeShuffledDeck];
-    let n = 1;
+    const stockCopy = [...stock];
     const tableauCopy = { ...tableauStore };
     //create the tableau piles
+    let n = 1;
     while (n < 5) {
       Object.keys(tableauStore).forEach((key) => {
-        const nextCard = deckCopy.pop(deckCopy.length - 1);
+        const nextCard = stockCopy.pop();
         nextCard.startLocation = key;
         tableauCopy[key] = [...tableauCopy[key], nextCard];
         updateTableauStore(tableauCopy);
-        updateWholeDeck(deckCopy);
       });
       n += 1;
     }
+    console.log("loop finished, time to deal f1: stockCopy:", stockCopy);
+    // set/deal first foundation startingCard and set startValue for subsequent foundations
+    const f1 = stockCopy.pop();
+    const foundations = [
+      { suit: f1.suit, cards: [f1], bounds: {} },
+      { suit: null, cards: [], bounds: {} },
+      { suit: null, cards: [], bounds: {} },
+      { suit: null, cards: [], bounds: {} },
+    ];
+    updateFoundationStore(foundations);
+    setStartValue(f1.value);
+
+    // mark start location of each card left in stock ? -> see useDeal.js
+    // ...
+    updateStock(stockCopy);
+
     //set an empty promise in order to await this function, to delay the setting of dealing state.
     return new Promise((resolve) => {
       setTimeout(() => {
@@ -99,11 +120,9 @@ export default function StockRow() {
         ref={stockRef}
       >
         <AnimatePresence>
-          {wholeShuffledDeck
-            .slice(wholeShuffledDeck.length - 4)
-            .map((card, i) => (
-              <StockCardBack key={card.uid} i={i} card={card} />
-            ))}
+          {stock.slice(stock.length - 4).map((card, i) => (
+            <StockCardBack key={card.uid} i={i} card={card} />
+          ))}
         </AnimatePresence>
       </div>
       <div className="cardPileAnchor">

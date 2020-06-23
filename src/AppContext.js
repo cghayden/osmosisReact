@@ -4,7 +4,8 @@ import { getShuffledDeck } from "./makeShuffledDeck";
 const AppContext = createContext(null);
 
 function AppStateProvider({ children }) {
-  const [foundationStore, updateFoundationStore] = useState([]);
+  const [gameNumber, setGameNumber] = useState(1);
+  const [dealing, setDealing] = useState(true);
   const [tableauStore, updateTableauStore] = useState({
     t1: [],
     t2: [],
@@ -13,29 +14,21 @@ function AppStateProvider({ children }) {
   });
   const [stock, updateStock] = useState([]);
   const [stockBounds, setStockBounds] = useState([]);
-
   const [discardPile, updateDiscardPile] = useState([]);
+
+  const [foundationStore, updateFoundationStore] = useState([]);
   const [foundationStartValue, setStartValue] = useState();
   const [suitPlacements, updateSuitPlacements] = useState({});
-  const [gameNumber, setGameNumber] = useState(1);
-  const [wholeShuffledDeck, updateWholeDeck] = useState([]);
-  const [dealing, setDealing] = useState(true);
-
-  // useEffect(() => {
-  //   const wholeShuffledDeck = getShuffledDeck();
-  //   setNewDeck(wholeShuffledDeck);
-  // }, [gameNumber]);
 
   function dealNewGame() {
-    updateWholeDeck(getShuffledDeck());
-    const { foundations, stock, tableaus, startValue } = deal();
-    updateFoundationStore(foundations);
-    // updateTableauStore(tableaus);
-    updateStock(stock);
-    updateDiscardPile([]);
-    setStartValue(startValue);
-    updateSuitPlacements({});
     setGameNumber((gameNumber) => (gameNumber += 1));
+    updateStock(getShuffledDeck());
+
+    // const { foundations, startValue } = deal();
+    // updateFoundationStore(foundations);
+    // setStartValue(startValue);
+    updateDiscardPile([]);
+    updateSuitPlacements({});
   }
 
   useEffect(dealNewGame, []);
@@ -55,9 +48,8 @@ function AppStateProvider({ children }) {
         suitPlacements,
         updateSuitPlacements,
         foundationStartValue,
+        setStartValue,
         gameNumber,
-        wholeShuffledDeck,
-        updateWholeDeck,
         dealing,
         setDealing,
         stockBounds,
