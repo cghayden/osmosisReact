@@ -20,6 +20,7 @@ export default function TableauPile({ cards = [], tid, top }) {
       {/* <div className="cardPileAnchor" ref={tabRef}> */}
       {cards.map((card, i) => {
         const left = i * 2 + 40;
+        console.log("left:", left);
         if (i === cards.length - 1) {
           return (
             <TableauCard

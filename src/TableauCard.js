@@ -208,13 +208,13 @@ export default function TableauCard({
 }
 
 const TabCardBack = styled(CardBack)`
-  left: ${(props) => props.left};
+  left: ${(props) => props.left + "px"};
   top: ${(props) => props.top + "px"};
   position: fixed;
 `;
 
 const TabCardFront = styled(CardFront)`
-  left: ${(props) => props.left};
+  left: ${(props) => props.left + "px"};
   top: ${(props) => props.top + "px"};
   position: fixed;
 `;
