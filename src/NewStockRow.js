@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
 import StockCardFront from "./StockCardFront";
 import StockCardBack from "./StockCardBack";
@@ -14,12 +14,20 @@ export default function StockRow() {
     tableauStore,
     updateTableauStore,
     updateWholeDeck,
+    setDealing,
   } = useAppState();
 
-  // useEffect(() => {
-  //   console.log("stock: ", stock);
-  //   console.log("discard pile: ", discardPile);
-  // }, [stock, discardPile]);
+  let stockRef = useRef();
+  const { gameNumber } = useAppState();
+
+  function setStockBounds() {
+    const stockRect = stockRef.current.getBoundingClientRect();
+    console.log("stockRect:", stockRect);
+    // const newFoundationStore = [...foundationStore];
+    // newFoundationStore[foundationIndex].bounds = rowClientRect;
+    // updateFoundationStore(newFoundationStore);
+  }
+  useEffect(setStockBounds, [gameNumber]);
 
   function resetStock() {
     const newStock = [...discardPile].reverse();
@@ -54,27 +62,40 @@ export default function StockRow() {
     }
   }
 
-  function animateDeal() {
+  function timedDeal() {
     const deckCopy = [...wholeShuffledDeck];
     let n = 1;
     const tableauCopy = { ...tableauStore };
     while (n < 5) {
-      console.log("looping,", n);
-      console.log("tableauCopy:", tableauCopy);
       Object.keys(tableauStore).forEach((key) => {
         const nextCard = deckCopy.pop(deckCopy.length - 1);
+        nextCard.startLocation = key;
         tableauCopy[key] = [...tableauCopy[key], nextCard];
-        // debugger;
         updateTableauStore(tableauCopy);
         updateWholeDeck(deckCopy);
       });
       n += 1;
     }
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve("finished dealing");
+      }, 1000);
+    });
+  }
+
+  async function animateDeal() {
+    await timedDeal();
+    //after deal is finished, set dealing to false so this state can be passed to tableau cards to orient their initial x,y location as being from the tableau pile, rather than the stock.
+    setDealing(false);
   }
 
   return (
     <div className="cardRow stockRow">
-      <div className="cardPileAnchor stockPile" onClick={() => flip()}>
+      <div
+        className="cardPileAnchor stockPile"
+        onClick={() => flip()}
+        ref={stockRef}
+      >
         <AnimatePresence>
           {wholeShuffledDeck
             .slice(wholeShuffledDeck.length - 4)

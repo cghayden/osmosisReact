@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { useAppState } from "./AppContext";
+import styled from "styled-components";
+
 import {
   CardFront,
   CardFont,
@@ -8,7 +10,7 @@ import {
   CardCorner,
   CardBack,
 } from "./CardStyles";
-export default function TableauCard({ facedown = false, i, card }) {
+export default function TableauCard({ facedown = false, i, card, tid, top }) {
   const [dropTargetBounds, setDropTargetBounds] = useState();
   const [dropTargetIndex, setDropTargetIndex] = useState();
 
@@ -20,6 +22,7 @@ export default function TableauCard({ facedown = false, i, card }) {
     updateTableauStore,
     discardPile,
     updateDiscardPile,
+    dealing,
   } = useAppState();
 
   function handleDragStart(e, info) {
@@ -122,26 +125,56 @@ export default function TableauCard({ facedown = false, i, card }) {
     return;
   }
 
+  const cardVariants = {
+    initial: (dealing) => {
+      return {
+        // position: "fixed",
+        translateX: dealing ? 100 : 0,
+        translateY: dealing ? 100 : 0,
+      };
+    },
+    animate: {
+      translateX: 0,
+      translateY: 0,
+      // left: custom.left,
+      // top: custom.top,
+    },
+  };
+
   return (
-    <AnimatePresence exitBeforeEnter initial={false}>
+    <AnimatePresence exitBeforeEnter>
       {facedown ? (
-        <CardBack
-          offset={`${i * 2}px`}
+        <TabCardBack
+          custom={dealing}
+          variants={cardVariants}
+          initial={"initial"}
+          animate={"animate"}
+          left={`${i * 2 + 40}px`}
           key={"b"}
-          exit={{ rotateY: 90, translateX: -40, scale: 1.1 }}
-          transition={{ duration: 0.2 }}
+          exit={{
+            rotateY: 90,
+            translateX: -40,
+            scale: 1.1,
+            transition: { duration: 0.2 },
+          }}
+          top={top}
         />
       ) : (
-        <CardFront
+        <TabCardFront
+          custom={dealing}
+          variants={cardVariants}
+          initial={"initial"}
+          animate={"animate"}
           red={card.suit === "\u{2665}" || card.suit === "\u{2666}"}
           key={"f"}
-          offset={`${i * 2}px`}
+          left={`${i * 2 + 40}px`}
           exit={{ rotateY: 0 }}
           drag
           onDragStart={handleDragStart}
           onDragEnd={(e) => handleDragEnd(e, "tableau")}
           dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
           dragElastic={1}
+          top={top}
         >
           <CardCorner>
             <p>{card.value}</p>
@@ -151,8 +184,20 @@ export default function TableauCard({ facedown = false, i, card }) {
             <CardFont>{card.value}</CardFont>
             <CardFont>{card.suit}</CardFont>
           </FullCardFaceDiv>
-        </CardFront>
+        </TabCardFront>
       )}
     </AnimatePresence>
   );
 }
+
+const TabCardFront = styled(CardFront)`
+  left: ${(props) => props.left};
+  top: ${(props) => props.top + "px"};
+  position: fixed;
+`;
+
+const TabCardBack = styled(CardBack)`
+  left: ${(props) => props.left};
+  top: ${(props) => props.top + "px"};
+  position: fixed;
+`;

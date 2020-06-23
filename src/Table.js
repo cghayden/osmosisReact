@@ -2,20 +2,34 @@ import React from "react";
 import styled from "styled-components";
 import TableauPile from "./TableauPile";
 import FoundationRow from "./FoundationRow";
-import StockRow from "./StockRow";
+// import StockRow from "./StockRow";
 import NewStockRow from "./NewStockRow";
 import { useAppState } from "./AppContext";
 
 export default function Table() {
-  const { foundationStore, tableauStore = {}, dealNewGame } = useAppState();
-
+  const {
+    foundationStore,
+    tableauStore = {},
+    // dealNewGame
+  } = useAppState();
+  function calcTableauPileTop(i) {
+    return 40 + i * 140;
+  }
   return (
     <TableLayout>
       <TableauColumn>
-        <button onClick={() => dealNewGame()}>New Game</button>
-        {Object.keys(tableauStore).map((key) => (
-          <TableauPile key={key} cards={tableauStore[key]} />
-        ))}
+        {/* <button onClick={() => dealNewGame()}>New Game</button> */}
+        {Object.keys(tableauStore).map((key, i) => {
+          const top = calcTableauPileTop(i);
+          return (
+            <TableauPile
+              key={key}
+              cards={tableauStore[key]}
+              tid={key}
+              top={top}
+            />
+          );
+        })}
       </TableauColumn>
       <div>
         {foundationStore.map((foundation, i) => (
@@ -39,7 +53,7 @@ const TableLayout = styled.div`
 `;
 const TableauColumn = styled.div`
   border-right: 2px solid darkgreen;
-  display: flex;
+  /* display: flex;
   flex-direction: column;
-  place-items: center;
+  place-items: center; */
 `;
