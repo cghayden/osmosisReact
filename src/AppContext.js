@@ -11,13 +11,9 @@ function AppStateProvider({ children }) {
     t3: [],
     t4: [],
   });
-  // const [tabBounds, setTabBounds] = useState({
-  //   t1: {},
-  //   t2: {},
-  //   t3: {},
-  //   t4: {},
-  // });
   const [stock, updateStock] = useState([]);
+  const [stockBounds, setStockBounds] = useState([]);
+
   const [discardPile, updateDiscardPile] = useState([]);
   const [foundationStartValue, setStartValue] = useState();
   const [suitPlacements, updateSuitPlacements] = useState({});
@@ -64,6 +60,8 @@ function AppStateProvider({ children }) {
         updateWholeDeck,
         dealing,
         setDealing,
+        stockBounds,
+        setStockBounds,
       }}
     >
       {children}

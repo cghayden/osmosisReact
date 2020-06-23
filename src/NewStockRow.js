@@ -15,19 +15,19 @@ export default function StockRow() {
     updateTableauStore,
     updateWholeDeck,
     setDealing,
+    stockBounds,
+    setStockBounds,
   } = useAppState();
 
   let stockRef = useRef();
   const { gameNumber } = useAppState();
 
-  function setStockBounds() {
+  function setStockBoundsInContext() {
     const stockRect = stockRef.current.getBoundingClientRect();
-    console.log("stockRect:", stockRect);
-    // const newFoundationStore = [...foundationStore];
-    // newFoundationStore[foundationIndex].bounds = rowClientRect;
-    // updateFoundationStore(newFoundationStore);
+    setStockBounds(stockRect);
   }
-  useEffect(setStockBounds, [gameNumber]);
+
+  useEffect(setStockBoundsInContext, [gameNumber]);
 
   function resetStock() {
     const newStock = [...discardPile].reverse();
@@ -66,6 +66,7 @@ export default function StockRow() {
     const deckCopy = [...wholeShuffledDeck];
     let n = 1;
     const tableauCopy = { ...tableauStore };
+    //create the tableau piles
     while (n < 5) {
       Object.keys(tableauStore).forEach((key) => {
         const nextCard = deckCopy.pop(deckCopy.length - 1);
@@ -76,6 +77,7 @@ export default function StockRow() {
       });
       n += 1;
     }
+    //set an empty promise in order to await this function, to delay the setting of dealing state.
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve("finished dealing");

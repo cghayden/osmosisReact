@@ -10,7 +10,14 @@ import {
   CardCorner,
   CardBack,
 } from "./CardStyles";
-export default function TableauCard({ facedown = false, i, card, tid, top }) {
+export default function TableauCard({
+  facedown = false,
+  i,
+  card,
+  tid,
+  top,
+  left,
+}) {
   const [dropTargetBounds, setDropTargetBounds] = useState();
   const [dropTargetIndex, setDropTargetIndex] = useState();
 
@@ -23,6 +30,7 @@ export default function TableauCard({ facedown = false, i, card, tid, top }) {
     discardPile,
     updateDiscardPile,
     dealing,
+    stockBounds,
   } = useAppState();
 
   function handleDragStart(e, info) {
@@ -126,18 +134,15 @@ export default function TableauCard({ facedown = false, i, card, tid, top }) {
   }
 
   const cardVariants = {
-    initial: (dealing) => {
+    initial: (custom) => {
       return {
-        // position: "fixed",
-        translateX: dealing ? 100 : 0,
-        translateY: dealing ? 100 : 0,
+        translateX: custom.dealing ? custom.stockLeft - custom.left : 0,
+        translateY: custom.dealing ? custom.stockTop - custom.top : 0,
       };
     },
     animate: {
       translateX: 0,
       translateY: 0,
-      // left: custom.left,
-      // top: custom.top,
     },
   };
 
@@ -145,11 +150,18 @@ export default function TableauCard({ facedown = false, i, card, tid, top }) {
     <AnimatePresence exitBeforeEnter>
       {facedown ? (
         <TabCardBack
-          custom={dealing}
+          custom={{
+            dealing,
+            top,
+            left,
+            stockLeft: stockBounds.left,
+            stockTop: stockBounds.top,
+          }}
           variants={cardVariants}
           initial={"initial"}
           animate={"animate"}
-          left={`${i * 2 + 40}px`}
+          top={top}
+          left={left}
           key={"b"}
           exit={{
             rotateY: 90,
@@ -157,24 +169,29 @@ export default function TableauCard({ facedown = false, i, card, tid, top }) {
             scale: 1.1,
             transition: { duration: 0.2 },
           }}
-          top={top}
         />
       ) : (
         <TabCardFront
-          custom={dealing}
+          custom={{
+            dealing,
+            top,
+            left,
+            stockLeft: stockBounds.left,
+            stockTop: stockBounds.top,
+          }}
           variants={cardVariants}
           initial={"initial"}
           animate={"animate"}
           red={card.suit === "\u{2665}" || card.suit === "\u{2666}"}
           key={"f"}
-          left={`${i * 2 + 40}px`}
+          top={top}
+          left={left}
           exit={{ rotateY: 0 }}
           drag
           onDragStart={handleDragStart}
           onDragEnd={(e) => handleDragEnd(e, "tableau")}
           dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
           dragElastic={1}
-          top={top}
         >
           <CardCorner>
             <p>{card.value}</p>
@@ -190,13 +207,13 @@ export default function TableauCard({ facedown = false, i, card, tid, top }) {
   );
 }
 
-const TabCardFront = styled(CardFront)`
+const TabCardBack = styled(CardBack)`
   left: ${(props) => props.left};
   top: ${(props) => props.top + "px"};
   position: fixed;
 `;
 
-const TabCardBack = styled(CardBack)`
+const TabCardFront = styled(CardFront)`
   left: ${(props) => props.left};
   top: ${(props) => props.top + "px"};
   position: fixed;
