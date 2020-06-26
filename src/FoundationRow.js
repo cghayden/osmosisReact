@@ -6,7 +6,6 @@ import FoundationCard from "./FoundationCard";
 export default function FoundationRow({ foundationIndex, cards }) {
   let rowRef = useRef();
   const { foundationStore, updateFoundationStore, gameNumber } = useAppState();
-  console.log("foundationStore:", foundationStore);
 
   function setBounds() {
     const rowClientRect = rowRef.current.getBoundingClientRect();

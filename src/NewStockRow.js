@@ -7,15 +7,11 @@ import { useAppState } from "./AppContext";
 export default function StockRow() {
   const {
     stock,
+    updateStock,
+    setStockBounds,
     discardPile,
     updateDiscardPile,
-    updateStock,
-    tableauStore,
-    updateTableauStore,
-    setDealing,
-    setStockBounds,
-    updateFoundationStore,
-    setStartValue,
+    animateDeal,
   } = useAppState();
 
   let stockRef = useRef();
@@ -60,58 +56,6 @@ export default function StockRow() {
       return;
     }
   }
-
-  function delay() {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve("one card dealt");
-      }, 1000);
-    });
-  }
-  function timedDeal() {
-    const stockCopy = [...stock];
-    const tableauCopy = { ...tableauStore };
-    //create the tableau piles
-    let n = 1;
-    while (n < 5) {
-      Object.keys(tableauStore).forEach((key) => {
-        const nextCard = stockCopy.pop();
-        nextCard.startLocation = key;
-        tableauCopy[key] = [...tableauCopy[key], nextCard];
-        updateTableauStore(tableauCopy);
-      });
-      n += 1;
-    }
-    console.log("loop finished, time to deal f1: stockCopy:", stockCopy);
-    // set/deal first foundation startingCard and set startValue for subsequent foundations
-    const f1 = stockCopy.pop();
-    const foundations = [
-      { suit: f1.suit, cards: [f1], bounds: {} },
-      { suit: null, cards: [], bounds: {} },
-      { suit: null, cards: [], bounds: {} },
-      { suit: null, cards: [], bounds: {} },
-    ];
-    updateFoundationStore(foundations);
-    setStartValue(f1.value);
-
-    // mark start location of each card left in stock ? -> see useDeal.js
-    // ...
-    updateStock(stockCopy);
-
-    //set an empty promise in order to await this function, to delay the setting of dealing state.
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve("finished dealing");
-      }, 1000);
-    });
-  }
-
-  async function animateDeal() {
-    await timedDeal();
-    //after deal is finished, set dealing to false so this state can be passed to tableau cards to orient their initial x,y location as being from the tableau pile, rather than the stock.
-    setDealing(false);
-  }
-
   return (
     <div className="cardRow stockRow">
       <div

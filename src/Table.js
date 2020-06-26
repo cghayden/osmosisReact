@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import TableauPile from "./TableauPile";
 import FoundationRow from "./FoundationRow";
-// import StockRow from "./StockRow";
 import NewStockRow from "./NewStockRow";
 import { useAppState } from "./AppContext";
 
@@ -14,7 +13,6 @@ export default function Table() {
   return (
     <TableLayout>
       <TableauColumn>
-        {/* <button onClick={() => dealNewGame()}>New Game</button> */}
         {Object.keys(tableauStore).map((key, i) => {
           const top = calcTableauPileTop(i);
           return (
