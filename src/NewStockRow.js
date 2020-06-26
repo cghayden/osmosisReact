@@ -11,7 +11,7 @@ export default function StockRow() {
     setStockBounds,
     discardPile,
     updateDiscardPile,
-    animateDeal,
+    newDeal,
   } = useAppState();
 
   let stockRef = useRef();
@@ -74,7 +74,7 @@ export default function StockRow() {
           return <StockCardFront key={card.uid} i={i} card={card} />;
         })}
       </div>
-      <button onClick={() => animateDeal()}>Deal</button>
+      <button onClick={() => newDeal()}>Deal</button>
     </div>
   );
 }

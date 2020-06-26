@@ -1,5 +1,5 @@
-import React, { useState, useEffect, createContext, useContext } from "react";
-// import { useDeal as deal } from "./useDeal";
+import React, { useState, createContext, useContext } from "react";
+import wait from "waait";
 import { getShuffledDeck } from "./makeShuffledDeck";
 const AppContext = createContext(null);
 
@@ -19,27 +19,29 @@ function AppStateProvider({ children }) {
   const [foundationStartValue, setStartValue] = useState();
   const [suitPlacements, updateSuitPlacements] = useState({});
 
-  function timedDeal() {
-    // updateStock(getShuffledDeck());
-    setGameNumber((gameNumber) => (gameNumber += 1));
-    updateDiscardPile([]);
-    updateSuitPlacements({});
+  function dealTableaus() {
     const stockCopy = [...stock];
-    const tableauCopy = { ...tableauStore };
-
-    //create the tableau piles
+    const newTableau = {
+      t1: [],
+      t2: [],
+      t3: [],
+      t4: [],
+    };
     let n = 1;
     while (n < 5) {
-      Object.keys(tableauStore).forEach((key) => {
+      Object.keys(newTableau).forEach((key) => {
         const nextCard = stockCopy.pop();
         nextCard.startLocation = key;
-        tableauCopy[key] = [...tableauCopy[key], nextCard];
-        updateTableauStore(tableauCopy);
+        newTableau[key] = [...newTableau[key], nextCard];
       });
       n += 1;
     }
-    console.log("loop finished, time to deal f1: stockCopy:", stockCopy);
-    // set/deal first foundation startingCard and set startValue for subsequent foundations
+    updateTableauStore(newTableau);
+    updateStock(stockCopy);
+  }
+
+  function setF1() {
+    const stockCopy = [...stock];
     const f1 = stockCopy.pop();
     const foundations = [
       { suit: f1.suit, cards: [f1], bounds: {} },
@@ -49,21 +51,39 @@ function AppStateProvider({ children }) {
     ];
     updateFoundationStore(foundations);
     setStartValue(f1.value);
-
-    // mark start location of each card left in stock ? -> see useDeal.js
-    // ...
     updateStock(stockCopy);
-
-    //set an empty promise in order to await this function, to delay the setting of dealing state.
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve("finished dealing");
-      }, 1000);
-    });
   }
 
-  async function animateDeal() {
-    await timedDeal();
+  function clearTable() {
+    updateDiscardPile([]);
+    updateSuitPlacements({});
+    updateFoundationStore([]);
+    updateStock(getShuffledDeck());
+  }
+
+  async function firstDeal() {
+    dealTableaus();
+    await wait(500);
+    setF1();
+    setDealing(false);
+  }
+
+  async function newDeal() {
+    setGameNumber((gameNumber) => (gameNumber += 1));
+    //get new 52 card shuffled deck
+    await wait(500);
+    // 1 clear table
+    clearTable();
+    await wait(500);
+
+    // 2 deal tableaus
+    dealTableaus();
+    //3 deal foundation
+    await wait(500);
+    console.log("tableau store:", tableauStore);
+
+    setF1();
+
     //after deal is finished, set dealing to false so this state can be passed to tableau cards to orient their initial x,y location as being from the tableau pile, rather than the stock.
     setDealing(false);
   }
@@ -79,7 +99,6 @@ function AppStateProvider({ children }) {
         updateStock,
         discardPile,
         updateDiscardPile,
-        // dealNewGame,
         suitPlacements,
         updateSuitPlacements,
         foundationStartValue,
@@ -89,7 +108,7 @@ function AppStateProvider({ children }) {
         setDealing,
         stockBounds,
         setStockBounds,
-        animateDeal,
+        newDeal,
       }}
     >
       {children}
@@ -103,3 +122,9 @@ function useAppState() {
 }
 
 export { AppStateProvider, AppContext, useAppState };
+
+// return new Promise((resolve) => {
+//   setTimeout(() => {
+//     resolve("finished dealing");
+//   }, 1000);
+// });

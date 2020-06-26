@@ -6,7 +6,7 @@ import NewStockRow from "./NewStockRow";
 import { useAppState } from "./AppContext";
 
 export default function Table() {
-  const { foundationStore, tableauStore = {} } = useAppState();
+  const { foundationStore, tableauStore } = useAppState();
   function calcTableauPileTop(i) {
     return 40 + i * 140;
   }
