@@ -30,7 +30,6 @@ export default function Table() {
           <FoundationRow key={i} cards={foundation.cards} foundationIndex={i} />
         ))}
       </div>
-      {/* <StockRow /> */}
       <NewStockRow />
     </TableLayout>
   );
@@ -47,7 +46,4 @@ const TableLayout = styled.div`
 `;
 const TableauColumn = styled.div`
   border-right: 2px solid darkgreen;
-  /* display: flex;
-  flex-direction: column;
-  place-items: center; */
 `;
