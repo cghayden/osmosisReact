@@ -45,7 +45,8 @@ function useDeal() {
     const orderedDeck = makeDeck(suits, values);
     //2. shuffle the deck
     const shuffledDeck = shuffleDeck(orderedDeck);
-
+    const shuffledDeck2 = shuffleDeck(makeDeck(suits, values));
+    const tQ = shuffledDeck2.splice(0, 16);
     //3. assemble tableaus and set them to store
     const tableau1 = shuffledDeck.splice(0, 4);
     tableau1.forEach((card) => (card.startLocation = "t1"));
@@ -78,11 +79,15 @@ function useDeal() {
       stock,
       tableaus,
       startValue,
+      tQ,
     };
   }
-  const { foundations, stock, tableaus, startValue } = dealCards(suits, values);
+  const { foundations, stock, tableaus, startValue, tQ } = dealCards(
+    suits,
+    values
+  );
 
-  return { foundations, stock, tableaus, startValue };
+  return { foundations, stock, tableaus, startValue, tQ };
 }
 
 export { useDeal };
