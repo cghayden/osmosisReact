@@ -39,11 +39,10 @@ function shuffleDeck(deck) {
 }
 
 // 1. make a deck
-const orderedDeck = makeDeck(suits, values);
 //2. shuffle the deck
-//  const shuffledDeck = shuffleDeck(orderedDeck);
 
 function getShuffledDeck() {
+  const orderedDeck = makeDeck(suits, values);
   return shuffleDeck(orderedDeck);
 }
 

@@ -26,8 +26,6 @@ export default function StockCardFront({ i, card }) {
       const nextFoundationIndex = foundationStore.findIndex(
         (el) => el.suit === null
       );
-      console.log("new Foundation, Index:", nextFoundationIndex);
-
       const targetFoundation = foundationStore[nextFoundationIndex];
       setDropTargetIndex(nextFoundationIndex);
       setDropTargetBounds(targetFoundation.bounds);

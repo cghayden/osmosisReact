@@ -19,8 +19,10 @@ function AppStateProvider({ children }) {
   const [foundationStartValue, setStartValue] = useState();
   const [suitPlacements, updateSuitPlacements] = useState({});
 
-  function dealTableaus() {
-    const stockCopy = [...stock];
+  async function deal() {
+    const stockCopy = getShuffledDeck();
+    // console.log("getShuffledDeck:", getShuffledDeck());
+    console.log("stockCopy:", stockCopy);
     const newTableau = {
       t1: [],
       t2: [],
@@ -37,7 +39,18 @@ function AppStateProvider({ children }) {
       n += 1;
     }
     updateTableauStore(newTableau);
+    // console.log("stockCopy:", stockCopy);
     updateStock(stockCopy);
+    await wait(200);
+    const f1 = stockCopy.pop();
+    const foundations = [
+      { suit: f1.suit, cards: [f1], bounds: {} },
+      { suit: null, cards: [], bounds: {} },
+      { suit: null, cards: [], bounds: {} },
+      { suit: null, cards: [], bounds: {} },
+    ];
+    updateFoundationStore(foundations);
+    setStartValue(f1.value);
   }
 
   function setF1() {
@@ -54,7 +67,8 @@ function AppStateProvider({ children }) {
     updateStock(stockCopy);
   }
 
-  function clearTable() {
+  async function clearTable() {
+    updateTableauStore({});
     updateDiscardPile([]);
     updateSuitPlacements({});
     updateFoundationStore([]);
@@ -62,28 +76,21 @@ function AppStateProvider({ children }) {
   }
 
   async function firstDeal() {
-    dealTableaus();
-    await wait(500);
-    setF1();
+    deal();
     setDealing(false);
   }
 
   async function newDeal() {
     setGameNumber((gameNumber) => (gameNumber += 1));
     //get new 52 card shuffled deck
-    await wait(500);
+    await wait(1000);
     // 1 clear table
     clearTable();
-    await wait(500);
-
-    // 2 deal tableaus
-    dealTableaus();
+    await wait(1000);
+    // 2 deal tableaus + f1
+    deal();
     //3 deal foundation
-    await wait(500);
-    console.log("tableau store:", tableauStore);
-
-    setF1();
-
+    // setF1();
     //after deal is finished, set dealing to false so this state can be passed to tableau cards to orient their initial x,y location as being from the tableau pile, rather than the stock.
     setDealing(false);
   }

@@ -149,62 +149,10 @@ export default function TableauCard({
   return (
     <>
       {facedown ? (
-        <JustCardBack top={top} left={left} key={"b"} />
-      ) : (
-        <JustCardFront
-          red={card.suit === "\u{2665}" || card.suit === "\u{2666}"}
-          key={"f"}
-          top={top}
-          left={left}
-          drag
-          onDragStart={handleDragStart}
-          onDragEnd={(e) => handleDragEnd(e, "tableau")}
-          dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-          dragElastic={1}
-        >
-          <CardCorner>
-            <p>{card.value}</p>
-            <p>{card.suit}</p>
-          </CardCorner>
-          <FullCardFaceDiv>
-            <CardFont>{card.value}</CardFont>
-            <CardFont>{card.suit}</CardFont>
-          </FullCardFaceDiv>
-        </JustCardFront>
-      )}
-    </>
-  );
-}
-
-const JustCardBack = styled(CardBack)`
-  left: ${(props) => props.left + "px"};
-  top: ${(props) => props.top + "px"};
-  position: fixed;
-`;
-
-const JustCardFront = styled(CardFront)`
-  left: ${(props) => props.left + "px"};
-  top: ${(props) => props.top + "px"};
-  position: fixed;
-`;
-
-// const TabCardBack = styled(CardBack)`
-//   left: ${(props) => props.left + "px"};
-//   top: ${(props) => props.top + "px"};
-//   position: fixed;
-// `;
-
-// const TabCardFront = styled(CardFront)`
-//   left: ${(props) => props.left + "px"};
-//   top: ${(props) => props.top + "px"};
-//   position: fixed;
-// `;
-
-// {
-/* <TabCardBack
-  custom={{
-    dealing,
-    top,
+        <TabCardBack
+          custom={{
+            dealing,
+            top,
             left,
             stockLeft: stockBounds.left,
             stockTop: stockBounds.top,
@@ -253,5 +201,32 @@ const JustCardFront = styled(CardFront)`
             <CardFont>{card.value}</CardFont>
             <CardFont>{card.suit}</CardFont>
           </FullCardFaceDiv>
-        </TabCardFront> */
-// }
+        </TabCardFront>
+      )}
+    </>
+  );
+}
+
+const JustCardBack = styled(CardBack)`
+  left: ${(props) => props.left + "px"};
+  top: ${(props) => props.top + "px"};
+  position: fixed;
+`;
+
+const JustCardFront = styled(CardFront)`
+  left: ${(props) => props.left + "px"};
+  top: ${(props) => props.top + "px"};
+  position: fixed;
+`;
+
+const TabCardBack = styled(CardBack)`
+  left: ${(props) => props.left + "px"};
+  top: ${(props) => props.top + "px"};
+  position: fixed;
+`;
+
+const TabCardFront = styled(CardFront)`
+  left: ${(props) => props.left + "px"};
+  top: ${(props) => props.top + "px"};
+  position: fixed;
+`;
