@@ -1,5 +1,5 @@
 // 2660 = spades, 2663 = clubs, 2665 = hearts, 2666 = diamonds
-function useDeal() {
+function dealDeck() {
   const suits = ["\u{2660}", "\u{2663}", "\u{2665}", "\u{2666}"];
   const values = [
     "a",
@@ -62,7 +62,7 @@ function useDeal() {
     const tableaus = { t1: tableau1, t2: tableau2, t3: tableau3, t4: tableau4 };
 
     //4. set foundations, with next card in shuffledDeck as the first card in the first foundation
-    const f1 = shuffledDeck.shift();
+    const f1 = shuffledDeck2.shift();
     const foundations = [
       { suit: f1.suit, cards: [f1], bounds: {} },
       { suit: null, cards: [], bounds: {} },
@@ -70,7 +70,7 @@ function useDeal() {
       { suit: null, cards: [], bounds: {} },
     ];
     //5. set remainder of suffledDeck to stock
-    const stock = shuffledDeck;
+    const stock = [...shuffledDeck2];
     stock.forEach((card) => (card.startLocation = "s"));
     // return foundations and stock to pass down to Table
     const startValue = foundations[0].cards[0].value;
@@ -90,4 +90,4 @@ function useDeal() {
   return { foundations, stock, tableaus, startValue, tQ };
 }
 
-export { useDeal };
+export { dealDeck };

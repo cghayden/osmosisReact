@@ -6,12 +6,13 @@ import { useAppState } from "./AppContext";
 
 export default function StockRow() {
   const {
-    stock,
+    stock = [],
     updateStock,
     setStockBounds,
     discardPile,
     updateDiscardPile,
     newDeal,
+    firstDeal,
   } = useAppState();
 
   let stockRef = useRef();

@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import TableauCard from "./TableauCard";
+import { useAppState, AppContext } from "./AppContext";
 
 export default function TableauPile({ cards = [], tid, top }) {
+  const { dealing } = useContext(AppContext);
   return (
     <div className="cardRow">
       {cards.map((card, i) => {
@@ -15,6 +17,7 @@ export default function TableauPile({ cards = [], tid, top }) {
               tid={tid}
               top={top}
               left={left}
+              facedown={dealing}
             />
           );
         } else {

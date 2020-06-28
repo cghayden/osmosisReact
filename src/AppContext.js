@@ -1,4 +1,5 @@
-import React, { useState, createContext, useContext } from "react";
+import React, { useState, createContext, useContext, useEffect } from "react";
+import { dealDeck } from "./dealDeck";
 import wait from "waait";
 import { getShuffledDeck } from "./makeShuffledDeck";
 const AppContext = createContext(null);
@@ -12,87 +13,81 @@ function AppStateProvider({ children }) {
     t3: [],
     t4: [],
   });
-  const [stock, updateStock] = useState(getShuffledDeck());
+  const [stock, updateStock] = useState();
   const [stockBounds, setStockBounds] = useState([]);
   const [discardPile, updateDiscardPile] = useState([]);
   const [foundationStore, updateFoundationStore] = useState([]);
   const [foundationStartValue, setStartValue] = useState();
   const [suitPlacements, updateSuitPlacements] = useState({});
 
-  async function deal() {
-    const stockCopy = getShuffledDeck();
-    // console.log("getShuffledDeck:", getShuffledDeck());
-    console.log("stockCopy:", stockCopy);
-    const newTableau = {
+  // function placeTabCard(tabKey, card) {
+  // }
+
+  useEffect(firstDeal, []);
+
+  async function firstDeal() {
+    const { tQ, foundations, stock: st, startValue: sv } = dealDeck();
+    updateStock(st);
+    const tabKeys = [
+      "t1",
+      "t2",
+      "t3",
+      "t4",
+      "t1",
+      "t2",
+      "t3",
+      "t4",
+      "t1",
+      "t2",
+      "t3",
+      "t4",
+      "t1",
+      "t2",
+      "t3",
+      "t4",
+    ];
+
+    const tableauStoreCopy = { ...tableauStore };
+    const dealInterval = setInterval(function () {
+      if (!tabKeys.length) {
+        clearInterval(dealInterval);
+        updateFoundationStore(foundations);
+        setStartValue(sv);
+        setDealing(false);
+      } else {
+        const card = tQ.pop();
+        const tabKey = tabKeys.pop();
+        card.startLocation = tabKey;
+        tableauStoreCopy[tabKey] = tableauStoreCopy[tabKey].concat(card);
+        updateTableauStore((tableauStore) => ({
+          ...tableauStore,
+          [tabKey]: tableauStore[tabKey].concat(card),
+        }));
+      }
+    }, 100);
+  }
+
+  async function clearTable() {
+    const emptyTableau = {
       t1: [],
       t2: [],
       t3: [],
       t4: [],
     };
-    let n = 1;
-    while (n < 5) {
-      Object.keys(newTableau).forEach((key) => {
-        const nextCard = stockCopy.pop();
-        nextCard.startLocation = key;
-        newTableau[key] = [...newTableau[key], nextCard];
-      });
-      n += 1;
-    }
-    updateTableauStore(newTableau);
-    // console.log("stockCopy:", stockCopy);
-    updateStock(stockCopy);
-    await wait(200);
-    const f1 = stockCopy.pop();
-    const foundations = [
-      { suit: f1.suit, cards: [f1], bounds: {} },
-      { suit: null, cards: [], bounds: {} },
-      { suit: null, cards: [], bounds: {} },
-      { suit: null, cards: [], bounds: {} },
-    ];
-    updateFoundationStore(foundations);
-    setStartValue(f1.value);
-  }
-
-  function setF1() {
-    const stockCopy = [...stock];
-    const f1 = stockCopy.pop();
-    const foundations = [
-      { suit: f1.suit, cards: [f1], bounds: {} },
-      { suit: null, cards: [], bounds: {} },
-      { suit: null, cards: [], bounds: {} },
-      { suit: null, cards: [], bounds: {} },
-    ];
-    updateFoundationStore(foundations);
-    setStartValue(f1.value);
-    updateStock(stockCopy);
-  }
-
-  async function clearTable() {
-    updateTableauStore({});
+    updateTableauStore(emptyTableau);
     updateDiscardPile([]);
     updateSuitPlacements({});
     updateFoundationStore([]);
-    updateStock(getShuffledDeck());
-  }
-
-  async function firstDeal() {
-    deal();
-    setDealing(false);
+    updateStock([]);
   }
 
   async function newDeal() {
+    setDealing(true);
     setGameNumber((gameNumber) => (gameNumber += 1));
-    //get new 52 card shuffled deck
-    await wait(1000);
     // 1 clear table
     clearTable();
-    await wait(1000);
-    // 2 deal tableaus + f1
-    deal();
-    //3 deal foundation
-    // setF1();
-    //after deal is finished, set dealing to false so this state can be passed to tableau cards to orient their initial x,y location as being from the tableau pile, rather than the stock.
-    setDealing(false);
+    await wait(200);
+    firstDeal();
   }
 
   return (
@@ -116,6 +111,7 @@ function AppStateProvider({ children }) {
         stockBounds,
         setStockBounds,
         newDeal,
+        firstDeal,
       }}
     >
       {children}
@@ -135,3 +131,36 @@ export { AppStateProvider, AppContext, useAppState };
 //     resolve("finished dealing");
 //   }, 1000);
 // });
+
+// async function deal() {
+//   const dealInterval =
+//   const stockCopy = getShuffledDeck();
+//   const newTableau = {
+//     t1: [],
+//     t2: [],
+//     t3: [],
+//     t4: [],
+//   };
+//   let n = 1;
+//   while (n < 5) {
+//     Object.keys(newTableau).forEach((key) => {
+//       const nextCard = stockCopy.pop();
+//       nextCard.startLocation = key;
+//       newTableau[key] = [...newTableau[key], nextCard];
+//     });
+//     n += 1;
+//   }
+//   updateTableauStore(newTableau);
+//   // console.log("stockCopy:", stockCopy);
+//   updateStock(stockCopy);
+//   await wait(200);
+//   const f1 = stockCopy.pop();
+//   const foundations = [
+//     { suit: f1.suit, cards: [f1], bounds: {} },
+//     { suit: null, cards: [], bounds: {} },
+//     { suit: null, cards: [], bounds: {} },
+//     { suit: null, cards: [], bounds: {} },
+//   ];
+//   updateFoundationStore(foundations);
+//   setStartValue(f1.value);
+// }

@@ -33,7 +33,7 @@ export default function TableauCard({
     stockBounds,
   } = useAppState();
 
-  function handleDragStart(e, info) {
+  function handleDragStart() {
     setDropTargetValues();
   }
   function handleDragEnd(e, source) {
@@ -148,61 +148,63 @@ export default function TableauCard({
 
   return (
     <>
-      {facedown ? (
-        <TabCardBack
-          custom={{
-            dealing,
-            top,
-            left,
-            stockLeft: stockBounds.left,
-            stockTop: stockBounds.top,
-          }}
-          variants={cardVariants}
-          initial={"initial"}
-          animate={"animate"}
-          top={top}
-          left={left}
-          key={"b"}
-          exit={{
-            rotateY: 90,
-            translateX: -40,
-            scale: 1.1,
-            transition: { duration: 0.2 },
-          }}
-        />
-      ) : (
-        <TabCardFront
-          custom={{
-            dealing,
-            top,
-            left,
-            stockLeft: stockBounds.left,
-            stockTop: stockBounds.top,
-          }}
-          variants={cardVariants}
-          initial={"initial"}
-          animate={"animate"}
-          red={card.suit === "\u{2665}" || card.suit === "\u{2666}"}
-          key={"f"}
-          top={top}
-          left={left}
-          exit={{ rotateY: 0 }}
-          drag
-          onDragStart={handleDragStart}
-          onDragEnd={(e) => handleDragEnd(e, "tableau")}
-          dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-          dragElastic={1}
-        >
-          <CardCorner>
-            <p>{card.value}</p>
-            <p>{card.suit}</p>
-          </CardCorner>
-          <FullCardFaceDiv>
-            <CardFont>{card.value}</CardFont>
-            <CardFont>{card.suit}</CardFont>
-          </FullCardFaceDiv>
-        </TabCardFront>
-      )}
+      <AnimatePresence exitBeforeEnter>
+        {facedown ? (
+          <TabCardBack
+            custom={{
+              dealing,
+              top,
+              left,
+              stockLeft: stockBounds.left,
+              stockTop: stockBounds.top,
+            }}
+            variants={cardVariants}
+            initial={"initial"}
+            animate={"animate"}
+            top={top}
+            left={left}
+            key={"b"}
+            exit={{
+              rotateY: 90,
+              translateX: -40,
+              scale: 1.1,
+              transition: { duration: 0.2 },
+            }}
+          />
+        ) : (
+          <TabCardFront
+            custom={{
+              dealing,
+              top,
+              left,
+              stockLeft: stockBounds.left,
+              stockTop: stockBounds.top,
+            }}
+            variants={cardVariants}
+            initial={"initial"}
+            animate={"animate"}
+            red={card.suit === "\u{2665}" || card.suit === "\u{2666}"}
+            key={"f"}
+            top={top}
+            left={left}
+            exit={{ rotateY: 0 }}
+            drag
+            onDragStart={handleDragStart}
+            onDragEnd={(e) => handleDragEnd(e, "tableau")}
+            dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+            dragElastic={1}
+          >
+            <CardCorner>
+              <p>{card.value}</p>
+              <p>{card.suit}</p>
+            </CardCorner>
+            <FullCardFaceDiv>
+              <CardFont>{card.value}</CardFont>
+              <CardFont>{card.suit}</CardFont>
+            </FullCardFaceDiv>
+          </TabCardFront>
+        )}
+      </AnimatePresence>
     </>
   );
 }
