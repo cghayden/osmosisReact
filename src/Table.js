@@ -2,14 +2,12 @@ import React, { useContext } from "react";
 import styled from "styled-components";
 import TableauPile from "./TableauPile";
 import FoundationRow from "./FoundationRow";
-import NewStockRow from "./NewStockRow";
-import { useAppState, AppContext } from "./AppContext";
+import StockRow from "./StockRow";
+import { AppContext } from "./AppContext";
 
 export default function Table() {
   const { foundationStore, tableauStore } = useContext(AppContext);
-  // function calcTableauPileTop(i) {
-  //   return 40 + i * 140;
-  // }
+
   return (
     <TableLayout>
       <TableauColumn>
@@ -17,25 +15,13 @@ export default function Table() {
         <TableauPile cards={tableauStore.t2} tid={"t2"} top={180} />
         <TableauPile cards={tableauStore.t3} tid={"t3"} top={320} />
         <TableauPile cards={tableauStore.t4} tid={"t4"} top={460} />
-
-        {/* {Object.keys(tableauStore).map((key, i) => {
-          const top = calcTableauPileTop(i);
-          return (
-            <TableauPile
-              key={key}
-              cards={tableauStore[key]}
-              tid={key}
-              top={top}
-            />
-          );
-        })} */}
       </TableauColumn>
       <div>
         {foundationStore.map((foundation, i) => (
           <FoundationRow key={i} cards={foundation.cards} foundationIndex={i} />
         ))}
       </div>
-      <NewStockRow />
+      <StockRow />
     </TableLayout>
   );
 }

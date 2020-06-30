@@ -16,10 +16,6 @@ export default function StockCardFront({ i, card }) {
     updateTableauStore,
   } = useAppState();
 
-  function handleDragStart(e, info) {
-    setDropTargetValues();
-  }
-
   function setDropTargetValues() {
     //options: 1. =startValue, set in a new foundationRow
     if (card.value === foundationStartValue) {
@@ -121,7 +117,6 @@ export default function StockCardFront({ i, card }) {
       red={card.suit === "\u{2665}" || card.suit === "\u{2666}"}
       key={"f"}
       offset={`${i * 2}px`}
-      // custom={i}
       initial={{ rotateY: -90, scale: 1.1, translateX: -30 }}
       animate={{
         rotateY: 0,
@@ -131,7 +126,7 @@ export default function StockCardFront({ i, card }) {
       }}
       exit={{ rotateY: 0, translateX: 0 }}
       drag
-      onDragStart={handleDragStart}
+      onDragStart={setDropTargetValues}
       onDragEnd={(e) => handleDragEnd(e, "discard")}
       dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
       dragElastic={1}

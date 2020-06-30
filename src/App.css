@@ -34,4 +34,5 @@ body {
 }
 .stockPile {
   justify-self: right;
+  border: 1px solid yellowgreen;
 }

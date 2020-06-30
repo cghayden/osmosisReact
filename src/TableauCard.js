@@ -10,14 +10,7 @@ import {
   CardCorner,
   CardBack,
 } from "./CardStyles";
-export default function TableauCard({
-  facedown = false,
-  i,
-  card,
-  tid,
-  top,
-  left,
-}) {
+export default function TableauCard({ card, top, left, facedown = false }) {
   const [dropTargetBounds, setDropTargetBounds] = useState();
   const [dropTargetIndex, setDropTargetIndex] = useState();
 
@@ -33,9 +26,6 @@ export default function TableauCard({
     stockBounds,
   } = useAppState();
 
-  function handleDragStart() {
-    setDropTargetValues();
-  }
   function handleDragEnd(e, source) {
     function removeCardFromTableau() {
       const tableauCopy = { ...tableauStore };
@@ -189,7 +179,7 @@ export default function TableauCard({
             left={left}
             exit={{ rotateY: 0 }}
             drag
-            onDragStart={handleDragStart}
+            onDragStart={setDropTargetValues}
             onDragEnd={(e) => handleDragEnd(e, "tableau")}
             dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
             dragElastic={1}
@@ -208,18 +198,6 @@ export default function TableauCard({
     </>
   );
 }
-
-const JustCardBack = styled(CardBack)`
-  left: ${(props) => props.left + "px"};
-  top: ${(props) => props.top + "px"};
-  position: fixed;
-`;
-
-const JustCardFront = styled(CardFront)`
-  left: ${(props) => props.left + "px"};
-  top: ${(props) => props.top + "px"};
-  position: fixed;
-`;
 
 const TabCardBack = styled(CardBack)`
   left: ${(props) => props.left + "px"};

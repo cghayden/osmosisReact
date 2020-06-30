@@ -1,16 +1,28 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
 import StockCardFront from "./StockCardFront";
 import StockCardBack from "./StockCardBack";
 import { useAppState } from "./AppContext";
 
 export default function StockRow() {
-  const { stock, discardPile, updateDiscardPile, updateStock } = useAppState();
+  const {
+    stock = [],
+    updateStock,
+    setStockBounds,
+    discardPile,
+    updateDiscardPile,
+    newDeal,
+  } = useAppState();
 
-  // useEffect(() => {
-  //   console.log("stock: ", stock);
-  //   console.log("discard pile: ", discardPile);
-  // }, [stock, discardPile]);
+  let stockRef = useRef();
+  const { gameNumber } = useAppState();
+
+  function setStockBoundsInContext() {
+    const stockRect = stockRef.current.getBoundingClientRect();
+    setStockBounds(stockRect);
+  }
+
+  useEffect(setStockBoundsInContext, [gameNumber]);
 
   function resetStock() {
     const newStock = [...discardPile].reverse();
@@ -46,7 +58,11 @@ export default function StockRow() {
   }
   return (
     <div className="cardRow stockRow">
-      <div className="cardPileAnchor stockPile" onClick={() => flip()}>
+      <div
+        className="cardPileAnchor stockPile"
+        onClick={() => flip()}
+        ref={stockRef}
+      >
         <AnimatePresence>
           {stock.slice(stock.length - 4).map((card, i) => (
             <StockCardBack key={card.uid} i={i} card={card} />
@@ -58,6 +74,7 @@ export default function StockRow() {
           return <StockCardFront key={card.uid} i={i} card={card} />;
         })}
       </div>
+      <button onClick={() => newDeal()}>Deal</button>
     </div>
   );
 }

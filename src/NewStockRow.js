@@ -12,7 +12,6 @@ export default function StockRow() {
     discardPile,
     updateDiscardPile,
     newDeal,
-    firstDeal,
   } = useAppState();
 
   let stockRef = useRef();
