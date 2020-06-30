@@ -1,18 +1,23 @@
 import React from "react";
 import TableauCard from "./TableauCard";
+import { useAppState } from "./AppContext";
 
-export default function TableauPile({ cards = [] }) {
+export default function TableauPile({ cards = [], tid, top }) {
+  const { dealing } = useAppState();
   return (
     <div className="cardRow">
-      <div className="cardPileAnchor">
-        {cards.map((card, i) => {
-          if (i === cards.length - 1) {
-            return <TableauCard key={i} i={i} card={card} />;
-          } else {
-            return <TableauCard key={i} i={i} card={card} facedown={true} />;
-          }
-        })}
-      </div>
+      {cards.map((card, i) => {
+        const left = i * 2 + 40;
+        return (
+          <TableauCard
+            key={i}
+            card={card}
+            top={top}
+            left={left}
+            facedown={dealing || i !== cards.length - 1}
+          />
+        );
+      })}
     </div>
   );
 }

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { useAppState } from "./AppContext";
+import styled from "styled-components";
+
 import {
   CardFront,
   CardFont,
@@ -8,7 +10,7 @@ import {
   CardCorner,
   CardBack,
 } from "./CardStyles";
-export default function TableauCard({ facedown = false, i, card }) {
+export default function TableauCard({ card, top, left, facedown = false }) {
   const [dropTargetBounds, setDropTargetBounds] = useState();
   const [dropTargetIndex, setDropTargetIndex] = useState();
 
@@ -20,11 +22,10 @@ export default function TableauCard({ facedown = false, i, card }) {
     updateTableauStore,
     discardPile,
     updateDiscardPile,
+    dealing,
+    stockBounds,
   } = useAppState();
 
-  function handleDragStart(e, info) {
-    setDropTargetValues();
-  }
   function handleDragEnd(e, source) {
     function removeCardFromTableau() {
       const tableauCopy = { ...tableauStore };
@@ -122,37 +123,90 @@ export default function TableauCard({ facedown = false, i, card }) {
     return;
   }
 
+  const cardVariants = {
+    initial: (custom) => {
+      return {
+        translateX: custom.dealing ? custom.stockLeft - custom.left : 0,
+        translateY: custom.dealing ? custom.stockTop - custom.top : 0,
+      };
+    },
+    animate: {
+      translateX: 0,
+      translateY: 0,
+    },
+  };
+
   return (
-    <AnimatePresence exitBeforeEnter initial={false}>
-      {facedown ? (
-        <CardBack
-          offset={`${i * 2}px`}
-          key={"b"}
-          exit={{ rotateY: 90, translateX: -40, scale: 1.1 }}
-          transition={{ duration: 0.2 }}
-        />
-      ) : (
-        <CardFront
-          red={card.suit === "\u{2665}" || card.suit === "\u{2666}"}
-          key={"f"}
-          offset={`${i * 2}px`}
-          exit={{ rotateY: 0 }}
-          drag
-          onDragStart={handleDragStart}
-          onDragEnd={(e) => handleDragEnd(e, "tableau")}
-          dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-          dragElastic={1}
-        >
-          <CardCorner>
-            <p>{card.value}</p>
-            <p>{card.suit}</p>
-          </CardCorner>
-          <FullCardFaceDiv>
-            <CardFont>{card.value}</CardFont>
-            <CardFont>{card.suit}</CardFont>
-          </FullCardFaceDiv>
-        </CardFront>
-      )}
-    </AnimatePresence>
+    <>
+      <AnimatePresence exitBeforeEnter>
+        {facedown ? (
+          <TabCardBack
+            custom={{
+              dealing,
+              top,
+              left,
+              stockLeft: stockBounds.left,
+              stockTop: stockBounds.top,
+            }}
+            variants={cardVariants}
+            initial={"initial"}
+            animate={"animate"}
+            top={top}
+            left={left}
+            key={"b"}
+            exit={{
+              rotateY: 90,
+              translateX: -40,
+              scale: 1.1,
+              transition: { duration: 0.2 },
+            }}
+          />
+        ) : (
+          <TabCardFront
+            custom={{
+              dealing,
+              top,
+              left,
+              stockLeft: stockBounds.left,
+              stockTop: stockBounds.top,
+            }}
+            variants={cardVariants}
+            initial={"initial"}
+            animate={"animate"}
+            red={card.suit === "\u{2665}" || card.suit === "\u{2666}"}
+            key={"f"}
+            top={top}
+            left={left}
+            exit={{ rotateY: 0 }}
+            drag
+            onDragStart={setDropTargetValues}
+            onDragEnd={(e) => handleDragEnd(e, "tableau")}
+            dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+            dragElastic={1}
+          >
+            <CardCorner>
+              <p>{card.value}</p>
+              <p>{card.suit}</p>
+            </CardCorner>
+            <FullCardFaceDiv>
+              <CardFont>{card.value}</CardFont>
+              <CardFont>{card.suit}</CardFont>
+            </FullCardFaceDiv>
+          </TabCardFront>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
+
+const TabCardBack = styled(CardBack)`
+  left: ${(props) => props.left + "px"};
+  top: ${(props) => props.top + "px"};
+  position: fixed;
+`;
+
+const TabCardFront = styled(CardFront)`
+  left: ${(props) => props.left + "px"};
+  top: ${(props) => props.top + "px"};
+  position: fixed;
+`;
