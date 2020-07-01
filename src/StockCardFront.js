@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useAppState } from "./AppContext";
 import { CardFront, CardFont, FullCardFaceDiv, CardCorner } from "./CardStyles";
 
-export default function StockCardFront({ i, card }) {
+export default function StockCardFront({ i, card, drag }) {
   const [dropTargetBounds, setDropTargetBounds] = useState();
   const [dropTargetIndex, setDropTargetIndex] = useState();
 
@@ -16,7 +16,8 @@ export default function StockCardFront({ i, card }) {
     updateTableauStore,
   } = useAppState();
 
-  function setDropTargetValues() {
+  function setDropTargetValues(e) {
+    console.log("e:", e);
     //options: 1. =startValue, set in a new foundationRow
     if (card.value === foundationStartValue) {
       const nextFoundationIndex = foundationStore.findIndex(
@@ -125,11 +126,12 @@ export default function StockCardFront({ i, card }) {
         transition: { delay: 0.1, duration: 0.1 },
       }}
       exit={{ rotateY: 0, translateX: 0 }}
-      drag
+      drag={drag}
       onDragStart={setDropTargetValues}
       onDragEnd={(e) => handleDragEnd(e, "discard")}
       dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
       dragElastic={1}
+      // onClick={(e) => console.log(e.target)}
     >
       <CardCorner>
         <p className="value">{card.value}</p>

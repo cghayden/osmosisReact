@@ -69,10 +69,19 @@ export default function StockRow() {
         </AnimatePresence>
       </div>
       <div className="cardPileAnchor discardPile">
-        {discardPile.map((card, i) => {
-          return <StockCardFront key={card.uid} i={i} card={card} />;
+        {discardPile.slice(discardPile.length - 4).map((card, i) => {
+          return (
+            <StockCardFront
+              key={card.uid}
+              i={i}
+              card={card}
+              drag={i === discardPile.slice(discardPile.length - 4).length - 1}
+            />
+          );
         })}
       </div>
     </div>
   );
 }
+
+// const drag = i === discardPile.length - 1 ? true : false;

@@ -25,7 +25,6 @@ export default function TableauCard({ card, top, left, facedown = false }) {
     dealing,
     stockBounds,
   } = useAppState();
-  console.log("stockBounds:", stockBounds);
 
   function handleDragEnd(e, source) {
     function removeCardFromTableau() {
