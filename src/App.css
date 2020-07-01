@@ -3,6 +3,7 @@
   --cardWidth: 70px;
   --cardBack: #00b7ff;
   --cardFlipShadow: #20637e;
+  --optionsZx: 10000;
 }
 body {
   background-color: green;
@@ -18,8 +19,11 @@ body {
   padding: 20px;
 }
 
+.foundations {
+  padding-top: 20px;
+}
+
 .cardPileAnchor {
-  /* background-color: lightgray; */
   border-radius: 5px;
   position: relative;
   width: var(--cardWidth);
@@ -30,9 +34,12 @@ body {
   padding-left: 40px;
   display: grid;
   grid-template-columns: 130px 130px;
-  place-items: center;
+  grid-column: 1/-1;
 }
 .stockPile {
   justify-self: right;
-  border: 1px solid yellowgreen;
+}
+
+.discardPile {
+  justify-self: center;
 }
