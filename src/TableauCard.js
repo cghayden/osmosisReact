@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { useAppState } from "./AppContext";
 import styled from "styled-components";
-import wait from "waait";
+// import wait from "waait";
+
 import {
   CardFront,
   CardFont,
@@ -20,21 +21,29 @@ export default function TableauCard({ card, top, left, facedown = false }) {
     foundationStartValue,
     tableauStore,
     updateTableauStore,
-    discardPile,
-    updateDiscardPile,
     dealing,
     stockBounds,
+    clickBounds,
+    setClickBounds,
   } = useAppState();
 
   function handleMouseDown() {
-    console.log("mouse down");
     setDropTargetValues();
   }
 
-  function handleMouseUp() {
+  function handleMouseUp(e) {
     if (!dropTargetBounds) {
       return;
     }
+    const targetCardRect = e.target.getBoundingClientRect();
+    setClickBounds((clickBounds) => {
+      return {
+        ...clickBounds,
+        clickPlay: true,
+        sourceLeft: targetCardRect.left,
+        sourceTop: targetCardRect.top,
+      };
+    });
     const newFoundation = { ...foundationStore[dropTargetIndex] };
     const foundationStoreCopy = [...foundationStore];
     if (!newFoundation.suit) {
@@ -45,10 +54,12 @@ export default function TableauCard({ card, top, left, facedown = false }) {
     updateFoundationStore(foundationStoreCopy);
     removeCardFromTableau();
   }
+
   function removeCardFromTableau() {
     const tableauCopy = { ...tableauStore };
     tableauCopy[card.startLocation].pop();
     updateTableauStore(tableauCopy);
+    // setClickBounds();
   }
 
   function handleDragEnd(e) {
@@ -79,6 +90,12 @@ export default function TableauCard({ card, top, left, facedown = false }) {
   }
 
   function setDropTargetValues() {
+    setClickBounds((clickBounds) => {
+      return {
+        ...clickBounds,
+        clickPlay: false,
+      };
+    });
     //options: 1. =startValue, set in a new foundationRow
     if (card.value === foundationStartValue) {
       const nextFoundationIndex = foundationStore.findIndex(
@@ -86,6 +103,7 @@ export default function TableauCard({ card, top, left, facedown = false }) {
       );
 
       const targetFoundation = foundationStore[nextFoundationIndex];
+      console.log("targetFoundation:", targetFoundation);
       setDropTargetIndex(nextFoundationIndex);
       setDropTargetBounds(targetFoundation.bounds);
       return;

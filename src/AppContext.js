@@ -18,6 +18,7 @@ function AppStateProvider({ children }) {
   const [foundationStore, updateFoundationStore] = useState([]);
   const [foundationStartValue, setStartValue] = useState();
   const [suitPlacements, updateSuitPlacements] = useState({});
+  const [clickBounds, setClickBounds] = useState({ clickPlay: false });
 
   useEffect(firstDeal, []);
 
@@ -107,6 +108,8 @@ function AppStateProvider({ children }) {
         setStockBounds,
         newDeal,
         firstDeal,
+        clickBounds,
+        setClickBounds,
       }}
     >
       {children}

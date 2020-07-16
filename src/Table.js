@@ -19,9 +19,17 @@ export default function Table() {
         <TableauPile cards={tableauStore.t4} tid={"t4"} top={460} />
       </TableauColumn>
       <div className="foundations">
-        {foundationStore.map((foundation, i) => (
-          <FoundationRow key={i} cards={foundation.cards} foundationIndex={i} />
-        ))}
+        {foundationStore.map((foundation, i) => {
+          const top = i * 140 + 40;
+          return (
+            <FoundationRow
+              key={i}
+              cards={foundation.cards}
+              foundationIndex={i}
+              top={top}
+            />
+          );
+        })}
       </div>
       <StockRow />
       <ShowMenuButton

@@ -1,6 +1,30 @@
 import React, { useState } from "react";
 import { useAppState } from "./AppContext";
 import { CardFront, CardFont, FullCardFaceDiv, CardCorner } from "./CardStyles";
+import styled from "styled-components";
+
+const variants = {
+  initial: (i) => {
+    return {
+      // skewX: -2,
+      // skewY: 3,
+
+      rotateY: 90,
+      scale: 1.1,
+      translateX: -10,
+    };
+  },
+  animate: {
+    // skewX: 0,
+    // skewY: 0,
+    originX: 0,
+    originY: 0,
+    rotateY: 0,
+    scale: 1,
+    translateX: 0,
+    transition: { delay: 0.1 },
+  },
+};
 
 export default function StockCardFront({ i, card, drag }) {
   const [dropTargetBounds, setDropTargetBounds] = useState();
@@ -12,12 +36,44 @@ export default function StockCardFront({ i, card, drag }) {
     foundationStartValue,
     discardPile,
     updateDiscardPile,
-    tableauStore,
-    updateTableauStore,
+    setClickBounds,
+    stockBounds,
   } = useAppState();
 
+  function handleMouseDown() {
+    setDropTargetValues();
+  }
+
+  function handleMouseUp(e) {
+    if (!dropTargetBounds) {
+      return;
+    }
+    setClickBounds((clickBounds) => {
+      return {
+        ...clickBounds,
+        clickPlay: true,
+        sourceLeft: stockBounds.left + 100,
+        sourceTop: stockBounds.top,
+      };
+    });
+    const newFoundation = { ...foundationStore[dropTargetIndex] };
+    const foundationStoreCopy = [...foundationStore];
+    if (!newFoundation.suit) {
+      newFoundation.suit = card.suit;
+    }
+    newFoundation.cards = [...newFoundation.cards, card];
+    foundationStoreCopy[dropTargetIndex] = newFoundation;
+    updateFoundationStore(foundationStoreCopy);
+    removeCardFromDiscardPile();
+  }
+
   function setDropTargetValues(e) {
-    console.log("e:", e);
+    setClickBounds((clickBounds) => {
+      return {
+        ...clickBounds,
+        clickPlay: false,
+      };
+    });
     //options: 1. =startValue, set in a new foundationRow
     if (card.value === foundationStartValue) {
       const nextFoundationIndex = foundationStore.findIndex(
@@ -69,13 +125,13 @@ export default function StockCardFront({ i, card, drag }) {
     }
     return;
   }
+  function removeCardFromDiscardPile() {
+    const discardPileCopy = [...discardPile];
+    discardPileCopy.pop();
+    updateDiscardPile(discardPileCopy);
+  }
 
   function handleDragEnd(e, source) {
-    function removeCardFromTableau() {
-      const tableauCopy = { ...tableauStore };
-      tableauCopy[card.startLocation].pop();
-      updateTableauStore(tableauCopy);
-    }
     function removeCardFromDiscardPile() {
       const discardPileCopy = [...discardPile];
       discardPileCopy.pop();
@@ -101,12 +157,7 @@ export default function StockCardFront({ i, card, drag }) {
       newFoundation.cards = [...newFoundation.cards, card];
       foundationStoreCopy[dropTargetIndex] = newFoundation;
       updateFoundationStore(foundationStoreCopy);
-      if (source === "discard") {
-        removeCardFromDiscardPile();
-      }
-      if (source === "tableau") {
-        removeCardFromTableau();
-      }
+      removeCardFromDiscardPile();
     } else {
       return;
     }
@@ -114,24 +165,22 @@ export default function StockCardFront({ i, card, drag }) {
   }
 
   return (
-    <CardFront
+    <DiscardFront
       red={card.suit === "\u{2665}" || card.suit === "\u{2666}"}
       key={"f"}
-      offset={`${i * 2}px`}
-      initial={{ rotateY: -90, scale: 1.1, translateX: -30 }}
-      animate={{
-        rotateY: 0,
-        translateX: 0,
-        scale: 1,
-        transition: { delay: 0.1, duration: 0.1 },
-      }}
+      offset={i < 4 ? `${i * 2}px` : "6px"}
+      custom={i}
+      variants={variants}
+      initial={"initial"}
+      animate={"animate"}
       exit={{ rotateY: 0, translateX: 0 }}
       drag={drag}
       onDragStart={setDropTargetValues}
       onDragEnd={(e) => handleDragEnd(e, "discard")}
       dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
       dragElastic={1}
-      // onClick={(e) => console.log(e.target)}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
     >
       <CardCorner>
         <p className="value">{card.value}</p>
@@ -141,6 +190,11 @@ export default function StockCardFront({ i, card, drag }) {
         <CardFont>{card.value}</CardFont>
         <CardFont>{card.suit}</CardFont>
       </FullCardFaceDiv>
-    </CardFront>
+    </DiscardFront>
   );
 }
+
+const DiscardFront = styled(CardFront)`
+  /* left: ${(props) => props.offset}; */
+
+`;
