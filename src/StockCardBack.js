@@ -6,10 +6,10 @@ const cardBackVariants = {
   inPlace: { rotateY: 0 },
   flip: {
     rotateY: 90,
-    translateX: 50,
+    translateX: 60,
     scale: 1.1,
     zIndex: 2000,
-    // background: "var(--cardFlipShadow)",
+    background: "var(--cardFlipShadow)",
   },
 };
 
@@ -22,7 +22,7 @@ export default function StockCardBack({ i, card }) {
       initial="enter"
       animate="inPlace"
       exit="flip"
-      transition={{ duration: 0.2 }}
+      transition={{ duration: 0.1 }}
       positionTransition
     />
   );

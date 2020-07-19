@@ -5,7 +5,7 @@ import { useAppState } from "./AppContext";
 export default function TableauPile({ cards = [], tid, top }) {
   const { dealing } = useAppState();
   return (
-    <div className="cardRow">
+    <div>
       {cards.map((card, i) => {
         const left = i * 2 + 40;
         return (

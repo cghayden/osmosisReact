@@ -9,20 +9,20 @@ const variants = {
 };
 
 export default function Options({ open, toggleOptions }) {
-  const { animateDeal } = useAppState();
+  const { newDeal } = useAppState();
 
   return (
     <OptionsPanel
       variants={variants}
       initial={"open"}
-      animate={open ? "open" : "open"}
+      animate={open ? "open" : "closed"}
       transition={{ duration: 0.3 }}
     >
       <ul>
         <button
           onClick={() => {
             toggleOptions(false);
-            animateDeal();
+            newDeal();
           }}
         >
           Deal
@@ -41,6 +41,7 @@ const OptionsPanel = styled(motion.div)`
   height: 100px;
   width: 100vw;
   background: whitesmoke;
+  z-index: var(--optionsZx);
   ul {
     display: flex;
     justify-content: space-around;

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { useAppState } from "./AppContext";
 import styled from "styled-components";
+// import wait from "waait";
 
 import {
   CardFront,
@@ -20,24 +21,48 @@ export default function TableauCard({ card, top, left, facedown = false }) {
     foundationStartValue,
     tableauStore,
     updateTableauStore,
-    discardPile,
-    updateDiscardPile,
     dealing,
     stockBounds,
+    clickBounds,
+    setClickBounds,
   } = useAppState();
 
-  function handleDragEnd(e, source) {
-    function removeCardFromTableau() {
-      const tableauCopy = { ...tableauStore };
-      tableauCopy[card.startLocation].pop();
-      updateTableauStore(tableauCopy);
-    }
-    function removeCardFromDiscardPile() {
-      const discardPileCopy = [...discardPile];
-      discardPileCopy.pop();
-      updateDiscardPile(discardPileCopy);
-    }
+  function handleMouseDown() {
+    setDropTargetValues();
+  }
 
+  function handleMouseUp(e) {
+    if (!dropTargetBounds) {
+      return;
+    }
+    const targetCardRect = e.target.getBoundingClientRect();
+    setClickBounds((clickBounds) => {
+      return {
+        ...clickBounds,
+        clickPlay: true,
+        sourceLeft: targetCardRect.left,
+        sourceTop: targetCardRect.top,
+      };
+    });
+    const newFoundation = { ...foundationStore[dropTargetIndex] };
+    const foundationStoreCopy = [...foundationStore];
+    if (!newFoundation.suit) {
+      newFoundation.suit = card.suit;
+    }
+    newFoundation.cards = [...newFoundation.cards, card];
+    foundationStoreCopy[dropTargetIndex] = newFoundation;
+    updateFoundationStore(foundationStoreCopy);
+    removeCardFromTableau();
+  }
+
+  function removeCardFromTableau() {
+    const tableauCopy = { ...tableauStore };
+    tableauCopy[card.startLocation].pop();
+    updateTableauStore(tableauCopy);
+    // setClickBounds();
+  }
+
+  function handleDragEnd(e) {
     if (!dropTargetBounds) {
       return;
     }
@@ -57,12 +82,7 @@ export default function TableauCard({ card, top, left, facedown = false }) {
       newFoundation.cards = [...newFoundation.cards, card];
       foundationStoreCopy[dropTargetIndex] = newFoundation;
       updateFoundationStore(foundationStoreCopy);
-      if (source === "discard") {
-        removeCardFromDiscardPile();
-      }
-      if (source === "tableau") {
-        removeCardFromTableau();
-      }
+      removeCardFromTableau();
     } else {
       return;
     }
@@ -70,6 +90,12 @@ export default function TableauCard({ card, top, left, facedown = false }) {
   }
 
   function setDropTargetValues() {
+    setClickBounds((clickBounds) => {
+      return {
+        ...clickBounds,
+        clickPlay: false,
+      };
+    });
     //options: 1. =startValue, set in a new foundationRow
     if (card.value === foundationStartValue) {
       const nextFoundationIndex = foundationStore.findIndex(
@@ -77,6 +103,7 @@ export default function TableauCard({ card, top, left, facedown = false }) {
       );
 
       const targetFoundation = foundationStore[nextFoundationIndex];
+      console.log("targetFoundation:", targetFoundation);
       setDropTargetIndex(nextFoundationIndex);
       setDropTargetBounds(targetFoundation.bounds);
       return;
@@ -180,9 +207,11 @@ export default function TableauCard({ card, top, left, facedown = false }) {
             exit={{ rotateY: 0 }}
             drag
             onDragStart={setDropTargetValues}
-            onDragEnd={(e) => handleDragEnd(e, "tableau")}
+            onDragEnd={(e) => handleDragEnd(e)}
             dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
             dragElastic={1}
+            onMouseDown={handleMouseDown}
+            onMouseUp={handleMouseUp}
           >
             <CardCorner>
               <p>{card.value}</p>

@@ -11,7 +11,6 @@ export default function StockRow() {
     setStockBounds,
     discardPile,
     updateDiscardPile,
-    newDeal,
   } = useAppState();
 
   let stockRef = useRef();
@@ -69,12 +68,20 @@ export default function StockRow() {
           ))}
         </AnimatePresence>
       </div>
-      <div className="cardPileAnchor">
+      <div className="cardPileAnchor discardPile">
         {discardPile.map((card, i) => {
-          return <StockCardFront key={card.uid} i={i} card={card} />;
+          return (
+            <StockCardFront
+              key={card.uid}
+              i={i}
+              card={card}
+              drag={i === discardPile.length - 1 ? true : false}
+            />
+          );
         })}
       </div>
-      <button onClick={() => newDeal()}>Deal</button>
     </div>
   );
 }
+
+// const drag = i === discardPile.length - 1 ? true : false;
