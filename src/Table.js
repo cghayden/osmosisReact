@@ -5,6 +5,8 @@ import FoundationRow from "./FoundationRow";
 import StockRow from "./StockRow";
 import { AppContext } from "./AppContext";
 import Options from "./Options";
+import MenuButton from "./MenuButton";
+import MenuToggler from "./MenuToggler";
 
 export default function Table() {
   const { foundationStore, tableauStore } = useContext(AppContext);
@@ -32,11 +34,9 @@ export default function Table() {
         })}
       </div>
       <StockRow />
-      <ShowMenuButton
-        onClick={() => toggleOptions((toggleOptions) => !toggleOptions)}
-      >
-        Menu
-      </ShowMenuButton>
+      {/* <MenuButton toggleOptions={toggleOptions} /> */}
+      <MenuToggler onClick={() => toggleOptions(!showOptions)} />
+      {/* <MenuButton toggleOptions={toggleOptions} /> */}
       <Options open={showOptions} toggleOptions={toggleOptions} />
     </TableLayout>
   );
@@ -52,19 +52,4 @@ const TableLayout = styled.div`
 `;
 const TableauColumn = styled.div`
   border-right: 2px solid darkgreen;
-`;
-
-const ShowMenuButton = styled.button`
-  position: fixed;
-  bottom: 30px;
-  left: 50%;
-  transform: translate3d(-50%, 0, 0);
-  width: 80px;
-  height: 40px;
-  background: darkgreen;
-  color: white;
-  font-size: 22px;
-  grid-column: 1/-1;
-  justify-self: center;
-  z-index: calc(var(--optionsZx) + 1);
 `;
