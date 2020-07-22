@@ -34,9 +34,7 @@ export default function Table() {
         })}
       </div>
       <StockRow />
-      {/* <MenuButton toggleOptions={toggleOptions} /> */}
       <MenuToggler onClick={() => toggleOptions(!showOptions)} />
-      {/* <MenuButton toggleOptions={toggleOptions} /> */}
       <Options open={showOptions} toggleOptions={toggleOptions} />
     </TableLayout>
   );
