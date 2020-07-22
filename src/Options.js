@@ -18,30 +18,31 @@ export default function Options({ open, toggleOptions }) {
       animate={open ? "open" : "closed"}
       transition={{ duration: 0.3 }}
     >
-      <div className="optionsHeader">
-        <CloseButton
-          onClick={() => toggleOptions((showOptions) => !showOptions)}
-        />
-      </div>
+      <div className="optionsBody">
+        <div className="optionsHeader">
+          <CloseButton
+            onClick={() => toggleOptions((showOptions) => !showOptions)}
+          />
+        </div>
 
-      <OptionButtons>
-        <ul>
-          <button
-            onClick={() => {
-              toggleOptions(false);
-              newDeal();
-            }}
-          >
-            Deal A New Game
-          </button>
-          {/* <button onClick={() => console.log("clicked option2")}>
-            Option2
-          </button>
-          */}
-        </ul>
-      </OptionButtons>
-      <h1>Osmosis Solitaire</h1>
-      <div>
+        <OptionButtons>
+          <ul>
+            <button
+              onClick={() => {
+                toggleOptions(false);
+                newDeal();
+              }}
+            >
+              Deal A New Game
+            </button>
+            {/* <button onClick={() => console.log("clicked option2")}>
+      Option2
+      </button>
+      */}
+          </ul>
+        </OptionButtons>
+        <h1>Osmosis Solitaire</h1>
+        <div></div>
         <p className="directions">
           In Osmosis, the game begins with four reserve piles and one card in
           the first foundation. The goal of the game is to move all cards to the
@@ -61,23 +62,30 @@ export default function Options({ open, toggleOptions }) {
 const OptionsPanel = styled(motion.div)`
   position: fixed;
   height: 90%;
-  background: whitesmoke;
-  color: black;
-  padding: 20px 30px;
+  background: var(--modalOverlay);
+  padding: 20px 20px;
   z-index: var(--optionsZx);
-  h1 {
-    padding: 20px 0;
-    margin: 0;
-    text-align: center;
-  }
-  .optionsHeader {
-    height: 30px;
-    display: grid;
-    place-items: end;
-  }
-  .directions {
-    line-height: 2;
-    margin: 0;
+
+  .optionsBody {
+    /* position: relative; */
+    background: whitesmoke;
+    color: black;
+    border-radius: 5px;
+    padding: 10px;
+    h1 {
+      padding: 20px 0;
+      margin: 0;
+      text-align: center;
+    }
+    .optionsHeader {
+      height: 30px;
+      display: grid;
+      place-items: end;
+    }
+    .directions {
+      line-height: 2;
+      margin: 0;
+    }
   }
 `;
 
