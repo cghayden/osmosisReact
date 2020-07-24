@@ -1,10 +1,12 @@
 :root {
   --cardHeight: 100px;
   --cardWidth: 70px;
+  --cardBackground: #fcfcfc;
   --cardBack: #00b7ff;
   --cardFlipShadow: #20637e;
   --optionsZx: 10000;
   --tableColor: hsl(120, 100%, 25%);
+  --cardAnchorBackground: hsl(120, 55%, 44%);
   --modalOverlay: rgba(23, 28, 23, 0.6);
 }
 body {
@@ -40,6 +42,10 @@ body {
 }
 .stockPile {
   justify-self: right;
+  background: url("restart-26-white.png") center no-repeat;
+  /* , 
+  var(--cardAnchorBackground);
+  */
 }
 
 .discardPile {

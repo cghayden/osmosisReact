@@ -8,7 +8,7 @@ const CardFront = styled(motion.div)`
   height: var(--cardHeight);
   border-radius: 5px;
   border: 1px solid black;
-  background: white;
+  background: var(--cardBackground);
   display: grid;
   grid-template-rows: repeat(2, 50px);
   grid-template-columns: 20px 1fr;

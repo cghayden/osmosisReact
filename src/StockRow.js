@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from "react";
+import styled from "styled-components";
 import { AnimatePresence } from "framer-motion";
 import StockCardFront from "./StockCardFront";
 import StockCardBack from "./StockCardBack";
@@ -83,3 +84,12 @@ export default function StockRow() {
     </div>
   );
 }
+
+const StockPileAnchor = styled.div`
+  justify-self: right;
+  border: 1px solid yellow;
+  background-image: url("rotate-ccw.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: bisque;
+`;
