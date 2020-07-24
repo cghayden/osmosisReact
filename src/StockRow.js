@@ -32,7 +32,7 @@ export default function StockRow() {
   function flipCards(count) {
     const stockCopy = [...stock];
     const discardPileCopy = [...discardPile];
-    const nextCards = stockCopy.splice(stockCopy.length - count);
+    const nextCards = stockCopy.splice(stockCopy.length - count).reverse();
     updateDiscardPile([...discardPileCopy, ...nextCards]);
     updateStock(stockCopy);
   }
@@ -83,5 +83,3 @@ export default function StockRow() {
     </div>
   );
 }
-
-// const drag = i === discardPile.length - 1 ? true : false;
