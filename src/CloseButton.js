@@ -1,5 +1,4 @@
 import React from "react";
-import styled from "styled-components";
 
 export default function MenuToggler(props) {
   return (
@@ -20,10 +19,3 @@ export default function MenuToggler(props) {
     </div>
   );
 }
-
-const XSvg = styled.div`
-  /* position: fixed;
-  right: 30px;
-  top: 50%;
-  transform: translate3d(-50%, 0, 0); */
-`;

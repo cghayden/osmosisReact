@@ -5,7 +5,6 @@ import FoundationRow from "./FoundationRow";
 import StockRow from "./StockRow";
 import { AppContext } from "./AppContext";
 import Options from "./Options";
-import MenuButton from "./MenuButton";
 import MenuToggler from "./MenuToggler";
 
 export default function Table() {

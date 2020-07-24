@@ -43,9 +43,6 @@ body {
 .stockPile {
   justify-self: right;
   background: url("restart-26-white.png") center no-repeat;
-  /* , 
-  var(--cardAnchorBackground);
-  */
 }
 
 .discardPile {

@@ -23,7 +23,6 @@ export default function TableauCard({ card, top, left, facedown = false }) {
     updateTableauStore,
     dealing,
     stockBounds,
-    clickBounds,
     setClickBounds,
   } = useAppState();
 
