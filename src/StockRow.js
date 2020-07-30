@@ -56,7 +56,7 @@ export default function StockRow() {
     }
   }
   return (
-    <div className="cardRow stockRow">
+    <div className="stockRow">
       <div
         className="cardPileAnchor stockPile"
         onClick={() => flip()}

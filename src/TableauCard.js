@@ -121,6 +121,7 @@ export default function TableauCard({ card, top, left, facedown = false }) {
       const existingFoundation = foundationStore.find(
         (el) => el.suit === card.suit
       );
+      console.log("existingFoundation:", existingFoundation);
       setDropTargetIndex(existingFoundationIndex);
       setDropTargetBounds(existingFoundation.bounds);
       return;

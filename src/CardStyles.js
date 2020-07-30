@@ -10,8 +10,8 @@ const CardFront = styled(motion.div)`
   border: 1px solid black;
   background: var(--cardBackground);
   display: grid;
-  grid-template-rows: repeat(2, 50px);
-  grid-template-columns: 20px 1fr;
+  grid-template-rows: repeat(2, calc(var(--cardHeight) / 2) px);
+  grid-template-columns: calc(var(--cardWidth) * 0.4) 1fr;
   place-items: center;
   border-radius: 5px;
   z-index: ${(props) => (props.foundation ? 0 : 100)};
@@ -26,12 +26,12 @@ const CardFront = styled(motion.div)`
 const CardCorner = styled.div`
   display: flex;
   flex-direction: column;
-  font-size: 14px;
+  font-size: calc(var(--cardHeight) * 0.14);
   grid-column: 1;
   grid-row: 1;
   align-self: start;
   padding-top: 4px;
-  padding-left: 4px;
+  padding-left: 0px;
   p {
     padding: 0;
     margin: 0;
@@ -43,7 +43,8 @@ const FullCardFaceDiv = styled.div`
   place-self: center;
 `;
 const CardFont = styled.p`
-  font-size: 22px;
+  font-size: calc(var(--cardHeight) * 0.2);
+  margin: 10px 0;
 `;
 const CardBack = styled(motion.div)`
   position: absolute;
