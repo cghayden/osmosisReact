@@ -35,10 +35,25 @@ body {
   height: var(--cardHeight);
 }
 
+/* anchor is needed as a placeholder to define the x and y limits of the row, used to measure if  dragged card is dropped in a playable row. */
+.rowAnchor {
+  width: var(--cardWidth);
+  height: var(--cardHeight);
+  /* visibility: hidden; */
+  /* border: 1px solid blue; */
+}
+
+.hiddenCard {
+  width: var(--cardWidth);
+  height: var(--cardHeight);
+  visibility: hidden;
+  position: fixed;
+}
+
 .stockRow {
   padding-left: 40px;
   display: flex;
-  /* grid-template-columns: 130px 130px; */
+  align-self: start;
   grid-column: 1/-1;
 }
 .stockPile {

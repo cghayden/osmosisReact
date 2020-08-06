@@ -16,7 +16,7 @@ const cardVariants = {
   },
 };
 
-export default function FoundationCard({ i, card, top, left }) {
+export default function FoundationCard({ card, top, left }) {
   const { clickBounds } = useContext(AppContext);
   return (
     <FoundationCardFront

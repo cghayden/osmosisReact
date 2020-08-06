@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { useAppState } from "./AppContext";
 import styled from "styled-components";
-// import wait from "waait";
 
 import {
   CardFront,
@@ -58,7 +57,6 @@ export default function TableauCard({ card, top, left, facedown = false }) {
     const tableauCopy = { ...tableauStore };
     tableauCopy[card.startLocation].pop();
     updateTableauStore(tableauCopy);
-    // setClickBounds();
   }
 
   function handleDragEnd(e) {
@@ -68,8 +66,6 @@ export default function TableauCard({ card, top, left, facedown = false }) {
     const dropPosition = { x: ~~e.clientX, y: ~~e.clientY };
 
     if (
-      dropTargetBounds.left < dropPosition.x &&
-      dropPosition.x < dropTargetBounds.right &&
       dropTargetBounds.top < dropPosition.y &&
       dropPosition.y < dropTargetBounds.bottom
     ) {
@@ -85,7 +81,7 @@ export default function TableauCard({ card, top, left, facedown = false }) {
     } else {
       return;
     }
-    //need to reset dropTargetValues to undefined
+    //need to reset dropTargetValues to undefined?
   }
 
   function setDropTargetValues() {
@@ -102,7 +98,6 @@ export default function TableauCard({ card, top, left, facedown = false }) {
       );
 
       const targetFoundation = foundationStore[nextFoundationIndex];
-      console.log("targetFoundation:", targetFoundation);
       setDropTargetIndex(nextFoundationIndex);
       setDropTargetBounds(targetFoundation.bounds);
       return;
@@ -121,7 +116,6 @@ export default function TableauCard({ card, top, left, facedown = false }) {
       const existingFoundation = foundationStore.find(
         (el) => el.suit === card.suit
       );
-      console.log("existingFoundation:", existingFoundation);
       setDropTargetIndex(existingFoundationIndex);
       setDropTargetBounds(existingFoundation.bounds);
       return;
@@ -235,7 +229,7 @@ const TabCardBack = styled(CardBack)`
 `;
 
 const TabCardFront = styled(CardFront)`
+  position: fixed;
   left: ${(props) => props.left + "px"};
   top: ${(props) => props.top + "px"};
-  position: fixed;
 `;

@@ -4,19 +4,20 @@ import { useAppState } from "./AppContext";
 
 export default function TableauPile({ cards = [], tid, top }) {
   const [leftBound, setLeftBound] = useState(20);
+  const [topBound, setTopBound] = useState(140);
+
   let pileRef = useRef();
   const { dealing, gameNumber } = useAppState();
+
   function setBounds() {
     const tPileRect = pileRef.current.getBoundingClientRect();
     setLeftBound(tPileRect.left);
-    // const newFoundationStore = [...foundationStore];
-    // newFoundationStore[foundationIndex].bounds = tPileRect;
-    // updateFoundationStore(newFoundationStore);
+    setTopBound(tPileRect.top);
   }
 
   useEffect(setBounds, [gameNumber]);
   return (
-    <div className="cardPileAnchor" ref={pileRef}>
+    <div ref={pileRef} className="rowAnchor">
       {cards.map((card, i) => {
         //old left = offset(i*2) + padding(40)
         // const left = i * 2 + 40;
@@ -26,7 +27,7 @@ export default function TableauPile({ cards = [], tid, top }) {
           <TableauCard
             key={i}
             card={card}
-            top={top}
+            top={topBound}
             left={left}
             facedown={dealing || i !== cards.length - 1}
           />
