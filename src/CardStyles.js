@@ -26,7 +26,7 @@ const CardFront = styled(motion.div)`
 const CardCorner = styled.div`
   display: flex;
   flex-direction: column;
-  font-size: calc(var(--cardHeight) * 0.14);
+  font-size: calc(var(--cardHeight) * 0.2);
   grid-column: 1;
   grid-row: 1;
   align-self: start;

@@ -21,7 +21,6 @@ export default function FoundationCard({ card, top, left }) {
   return (
     <FoundationCardFront
       red={card.suit === "\u{2665}" || card.suit === "\u{2666}"}
-      // offset={`${i * 24}px`}
       foundation
       variants={cardVariants}
       initial={"initial"}
