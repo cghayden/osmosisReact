@@ -4,25 +4,18 @@ import { CardFront, CardFont, FullCardFaceDiv, CardCorner } from "./CardStyles";
 import styled from "styled-components";
 
 const variants = {
-  initial: (i) => {
-    return {
-      // skewX: -2,
-      // skewY: 3,
-
-      rotateY: 90,
-      scale: 1.1,
-      translateX: -10,
-    };
+  initial: {
+    rotateY: 90,
+    scale: 1.1,
+    translateX: -10,
   },
   animate: {
-    // skewX: 0,
-    // skewY: 0,
     originX: 0,
     originY: 0,
     rotateY: 0,
     scale: 1,
     translateX: 0,
-    transition: { delay: 0.1 },
+    // transition: { delay: 0.1 },
   },
 };
 
@@ -169,7 +162,6 @@ export default function StockCardFront({ i, card, drag }) {
       red={card.suit === "\u{2665}" || card.suit === "\u{2666}"}
       key={"f"}
       offset={i < 4 ? `${i * 2}px` : "6px"}
-      custom={i}
       variants={variants}
       initial={"initial"}
       animate={"animate"}
