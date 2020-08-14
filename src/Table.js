@@ -75,4 +75,10 @@ const FoundationColumn = styled(motion.div)`
   grid-template-columns: 1fr;
   grid-template-rows: repeat(4, calc(var(--cardHeight) * 1.4));
   align-items: center;
+  padding-left: 25px;
+
+  @media all and (max-width: 480px) {
+    padding-left: 2vw;
+    background-color: red;
+  }
 `;

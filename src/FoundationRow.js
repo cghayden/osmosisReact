@@ -11,6 +11,7 @@ export default function FoundationRow({ foundationIndex, cards, cardWidth }) {
 
   function setRowBounds() {
     const rowBounds = cardRowRef.current.getBoundingClientRect();
+    console.log("rowBounds:", rowBounds);
     setLeftBound(rowBounds.left);
     setTopBound(rowBounds.top);
     const newFoundationStore = [...foundationStore];
@@ -27,7 +28,7 @@ export default function FoundationRow({ foundationIndex, cards, cardWidth }) {
         // new left = card offset(i*22), leftBound(dynamic) + f-row padding(20)
         //old left = card offset(i*22) + tab column width(hard 140) + f-row padding(20)
         const offset = i * cardWidth * 0.37;
-        const left = offset + leftBound + 20;
+        const left = offset + leftBound;
         return (
           <FoundationCard
             key={card.uid}

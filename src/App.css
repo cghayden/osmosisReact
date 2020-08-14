@@ -1,6 +1,6 @@
 :root {
-  --cardHeight: min(13vw * 1.4, 104px);
-  --cardWidth: min(13vw, 74px);
+  --cardHeight: min(14vw * 1.4, 104px);
+  --cardWidth: min(14vw, 74px);
   --tabColumnWidth: calc(var(--cardWidth) + 20px);
   --cardBackground: #fcfcfc;
   --cardBack: #00b7ff;
@@ -9,6 +9,7 @@
   --tableColor: hsl(120, 100%, 25%);
   --cardAnchorBackground: hsl(120, 55%, 44%);
   --modalOverlay: rgba(23, 28, 23, 0.6);
+  /* --foundationColumnLeftPadding: min(vw, 25px); */
 }
 body {
   background-color: var(--tableColor);
@@ -41,7 +42,7 @@ body {
   width: var(--cardWidth);
   height: var(--cardHeight);
   /* visibility: hidden; */
-  /* border: 1px solid blue; */
+  border: 1px solid yellow;
 }
 
 .hiddenCard {
