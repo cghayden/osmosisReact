@@ -40,7 +40,7 @@ export default function MenuToggler(props) {
 
 const MenuSvg = styled.div`
   position: fixed;
-  top: 20px;
-  right: 20px;
+  top: 25px;
+  right: 25px;
   transform: translate3d(-50%, 0, 0);
 `;

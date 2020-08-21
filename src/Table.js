@@ -62,23 +62,29 @@ const TableLayout = styled.div`
   align-items: center;
   grid-template-columns: auto 1fr;
   grid-template-rows: calc(var(--cardHeight) * 6) 140px;
+  @media all and (max-width: 480px) {
+    padding-top: 60px;
+  }
 `;
 const TableauColumn = styled.div`
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: repeat(4, calc(var(--cardHeight) * 1.4));
+  grid-template-rows: repeat(4, calc(var(--cardHeight) * 1.3));
   align-items: center;
   width: var(--tabColumnWidth);
+  @media all and (max-width: 480px) {
+    grid-template-rows: repeat(4, calc(var(--cardHeight) * 1.4));
+  }
 `;
 const FoundationColumn = styled(motion.div)`
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: repeat(4, calc(var(--cardHeight) * 1.4));
+  grid-template-rows: repeat(4, calc(var(--cardHeight) * 1.3));
   align-items: center;
   padding-left: 25px;
 
   @media all and (max-width: 480px) {
     padding-left: 2vw;
-    background-color: red;
+    grid-template-rows: repeat(4, calc(var(--cardHeight) * 1.4));
   }
 `;
