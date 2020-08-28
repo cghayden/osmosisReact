@@ -11,6 +11,7 @@ export default function TableauPile({ cards = [], tid, top }) {
 
   function setBounds() {
     const tPileRect = pileRef.current.getBoundingClientRect();
+    console.log("tPileRect:", tPileRect);
     setLeftBound(tPileRect.left);
     setTopBound(tPileRect.top);
   }

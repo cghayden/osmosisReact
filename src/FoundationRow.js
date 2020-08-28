@@ -11,7 +11,6 @@ export default function FoundationRow({ foundationIndex, cards, cardWidth }) {
 
   function setRowBounds() {
     const rowBounds = cardRowRef.current.getBoundingClientRect();
-    console.log("rowBounds:", rowBounds);
     setLeftBound(rowBounds.left);
     setTopBound(rowBounds.top);
     const newFoundationStore = [...foundationStore];

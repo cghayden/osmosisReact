@@ -40,7 +40,7 @@ body {
 .rowAnchor {
   width: var(--cardWidth);
   height: var(--cardHeight);
-  /* border: 1px solid yellow; */
+  border: 1px solid yellow;
 }
 
 .hiddenCard {
@@ -48,17 +48,6 @@ body {
   height: var(--cardHeight);
   visibility: hidden;
   position: fixed;
-}
-
-.stockRow {
-  padding-left: 40px;
-  display: flex;
-  align-self: start;
-  grid-column: 1/-1;
-}
-.stockPile {
-  justify-self: right;
-  background: url("restart-26-white.png") center no-repeat;
 }
 
 .discardPile {

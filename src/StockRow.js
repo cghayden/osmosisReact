@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
+import styled from "styled-components";
 import StockCardFront from "./StockCardFront";
 import StockCardBack from "./StockCardBack";
 import { useAppState } from "./AppContext";
@@ -56,9 +57,9 @@ export default function StockRow() {
     }
   }
   return (
-    <div className="stockRow">
-      <div
-        className="cardPileAnchor stockPile"
+    <StockRowDiv>
+      <StockPile
+        className="cardPileAnchor"
         onClick={() => flip()}
         ref={stockRef}
       >
@@ -67,7 +68,7 @@ export default function StockRow() {
             <StockCardBack key={card.uid} i={i} card={card} />
           ))}
         </AnimatePresence>
-      </div>
+      </StockPile>
       <div className="cardPileAnchor discardPile">
         {discardPile.map((card, i) => {
           return (
@@ -80,6 +81,21 @@ export default function StockRow() {
           );
         })}
       </div>
-    </div>
+    </StockRowDiv>
   );
 }
+
+const StockRowDiv = styled.div`
+  padding-left: 40px;
+  display: flex;
+  align-self: start;
+  grid-column: 1/-1;
+  @media all and (max-width: 480px) {
+    padding-top: 40px;
+  }
+`;
+
+const StockPile = styled.div`
+  justify-self: right;
+  background: url("restart-26-white.png") center no-repeat;
+`;

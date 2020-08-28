@@ -57,11 +57,11 @@ const TableLayout = styled.div`
   background: green;
   max-width: 660px;
   margin: 0 auto;
-  height: 100vh;
+  /* height: 100vh; */
   display: grid;
-  align-items: center;
+  /* align-items: center; */
   grid-template-columns: auto 1fr;
-  grid-template-rows: calc(var(--cardHeight) * 6) 140px;
+  /* grid-template-rows: calc(var(--cardHeight) * 6) 140px; */
   @media all and (max-width: 480px) {
     padding-top: 60px;
   }
