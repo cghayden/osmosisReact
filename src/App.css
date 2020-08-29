@@ -2,11 +2,12 @@
   --cardHeight: min(14vw * 1.4, 104px);
   --cardWidth: min(14vw, 74px);
   --tabColumnWidth: calc(var(--cardWidth) + 20px);
+  --tableColor: hsl(120, 50%, 25%);
+  /* --tableColor: #46a46c; */
   --cardBackground: #fcfcfc;
   --cardBack: #00b7ff;
   --cardFlipShadow: #20637e;
   --optionsZx: 10000;
-  --tableColor: hsl(120, 100%, 25%);
   --cardAnchorBackground: hsl(120, 55%, 44%);
   --modalOverlay: rgba(23, 28, 23, 0.6);
 }
@@ -37,10 +38,6 @@ body {
 }
 .stockPileAnchor {
   justify-self: right;
-  /* border-radius: 5px; */
-  /* position: relative; */
-  /* width: var(--cardWidth); */
-  /* height: var(--cardHeight); */
   background: url("restart-26-white.png") center no-repeat;
 }
 
@@ -48,7 +45,6 @@ body {
 .rowAnchor {
   width: var(--cardWidth);
   height: var(--cardHeight);
-  /* border: 1px solid yellow; */
 }
 
 .hiddenCard {

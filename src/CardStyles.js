@@ -7,10 +7,10 @@ const CardFront = styled(motion.div)`
   width: var(--cardWidth);
   height: var(--cardHeight);
   border-radius: 5px;
-  border: 1px solid black;
+  border: 1px solid darkgreen;
+  box-shadow: 1px 2px 3px 0px hsl(120, 50%, 15%);
   background: var(--cardBackground);
   display: grid;
-  /* grid-template-rows: repeat(3, calc(var(--cardHeight) / 3) px); */
   grid-template-rows: 1fr 1fr;
   grid-template-columns: calc(var(--cardWidth) * 0.4) 1fr calc(
       var(--cardWidth) * 0.4
@@ -76,9 +76,16 @@ const CardBack = styled(motion.div)`
   width: var(--cardWidth);
   height: var(--cardHeight);
   border-radius: 5px;
-  border: 1px solid black;
-  background-color: var(--cardBack);
+  /* border: 1px solid darkgreen; */
+  box-shadow: 1px 2px 3px 0px hsl(120, 50%, 15%),
+    -1px 1px 3px 0px hsl(120, 50%, 29%);
+
+  /* background-color: var(--intersectingCircles-background);
+  background-image: var(--intersectingCirles-image); */
   transform-style: preserve-3d;
+  background: linear-gradient(45deg, blue, lightskyblue);
+  /* background-color: #aaa;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23777' fill-opacity='0.7' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E"); */
 `;
 
 export {

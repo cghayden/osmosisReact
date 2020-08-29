@@ -65,7 +65,12 @@ export default function StockRow() {
       >
         <AnimatePresence>
           {stock.slice(stock.length - 4).map((card, i) => (
-            <StockCardBack key={card.uid} i={i} card={card} />
+            <StockCardBack
+              key={card.uid}
+              i={i}
+              card={card}
+              className="ladybird"
+            />
           ))}
         </AnimatePresence>
       </div>

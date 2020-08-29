@@ -54,7 +54,7 @@ export default function Table() {
 
 const TableLayout = styled.div`
   padding-top: 20px;
-  background: green;
+  /* background: green; */
   max-width: 660px;
   margin: 0 auto;
   /* height: 100vh; */
