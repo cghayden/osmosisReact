@@ -35,6 +35,14 @@ body {
   width: var(--cardWidth);
   height: var(--cardHeight);
 }
+.stockPileAnchor {
+  justify-self: right;
+  /* border-radius: 5px; */
+  /* position: relative; */
+  /* width: var(--cardWidth); */
+  /* height: var(--cardHeight); */
+  background: url("restart-26-white.png") center no-repeat;
+}
 
 /* anchor is needed as a placeholder to define the x and y limits of the row, used to measure if  dragged card is dropped in a playable row. */
 .rowAnchor {

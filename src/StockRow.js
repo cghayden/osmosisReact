@@ -58,8 +58,8 @@ export default function StockRow() {
   }
   return (
     <StockRowDiv>
-      <StockPile
-        className="cardPileAnchor"
+      <div
+        className="cardPileAnchor stockPileAnchor"
         onClick={() => flip()}
         ref={stockRef}
       >
@@ -68,7 +68,7 @@ export default function StockRow() {
             <StockCardBack key={card.uid} i={i} card={card} />
           ))}
         </AnimatePresence>
-      </StockPile>
+      </div>
       <div className="cardPileAnchor discardPile">
         {discardPile.map((card, i) => {
           return (
