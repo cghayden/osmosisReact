@@ -69,6 +69,8 @@ export default function Options({ open, toggleOptions }) {
 
 const OptionsPanel = styled(motion.div)`
   position: fixed;
+  top: 0;
+  left: 0;
   height: 100%;
   background: var(--modalOverlay);
   padding: 20px 20px;
@@ -91,8 +93,13 @@ const OptionsPanel = styled(motion.div)`
       place-items: end;
     }
     .directions {
-      line-height: 2;
+      line-height: 1.5;
       margin: 0;
+    }
+  }
+  @media all and (max-width: 660px) {
+    h1 {
+      font-size: 1.5rem;
     }
   }
 `;
