@@ -2,7 +2,7 @@
 function dealDeck() {
   const suits = ["\u{2660}", "\u{2663}", "\u{2665}", "\u{2666}"];
   const values = [
-    "a",
+    "A",
     "2",
     "3",
     "4",

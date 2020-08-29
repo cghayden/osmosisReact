@@ -1,18 +1,25 @@
 :root {
-  --cardHeight: 100px;
-  --cardWidth: 70px;
+  --cardHeight: min(14vw * 1.4, 104px);
+  --cardWidth: min(14vw, 74px);
+  --tabColumnWidth: calc(var(--cardWidth) + 20px);
+  --tableColor: hsl(120, 50%, 25%);
+  /* --tableColor: #46a46c; */
+  --cardBackground: #fcfcfc;
   --cardBack: #00b7ff;
   --cardFlipShadow: #20637e;
   --optionsZx: 10000;
+  --cardAnchorBackground: hsl(120, 55%, 44%);
+  --modalOverlay: rgba(23, 28, 23, 0.6);
 }
 body {
-  background-color: green;
+  background-color: var(--tableColor);
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
 }
 
 .cardRow {
@@ -29,17 +36,25 @@ body {
   width: var(--cardWidth);
   height: var(--cardHeight);
 }
-
-.stockRow {
-  padding-left: 40px;
-  display: grid;
-  grid-template-columns: 130px 130px;
-  grid-column: 1/-1;
-}
-.stockPile {
+.stockPileAnchor {
   justify-self: right;
+  background: url("restart-26-white.png") center no-repeat;
+}
+
+/* anchor is needed as a placeholder to define the x and y limits of the row, used to measure if  dragged card is dropped in a playable row. */
+.rowAnchor {
+  width: var(--cardWidth);
+  height: var(--cardHeight);
+}
+
+.hiddenCard {
+  width: var(--cardWidth);
+  height: var(--cardHeight);
+  visibility: hidden;
+  position: fixed;
 }
 
 .discardPile {
   justify-self: center;
+  margin-left: 20px;
 }

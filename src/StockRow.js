@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
+import styled from "styled-components";
 import StockCardFront from "./StockCardFront";
 import StockCardBack from "./StockCardBack";
 import { useAppState } from "./AppContext";
@@ -32,7 +33,7 @@ export default function StockRow() {
   function flipCards(count) {
     const stockCopy = [...stock];
     const discardPileCopy = [...discardPile];
-    const nextCards = stockCopy.splice(stockCopy.length - count);
+    const nextCards = stockCopy.splice(stockCopy.length - count).reverse();
     updateDiscardPile([...discardPileCopy, ...nextCards]);
     updateStock(stockCopy);
   }
@@ -56,15 +57,20 @@ export default function StockRow() {
     }
   }
   return (
-    <div className="cardRow stockRow">
+    <StockRowDiv>
       <div
-        className="cardPileAnchor stockPile"
+        className="cardPileAnchor stockPileAnchor"
         onClick={() => flip()}
         ref={stockRef}
       >
         <AnimatePresence>
           {stock.slice(stock.length - 4).map((card, i) => (
-            <StockCardBack key={card.uid} i={i} card={card} />
+            <StockCardBack
+              key={card.uid}
+              i={i}
+              card={card}
+              className="ladybird"
+            />
           ))}
         </AnimatePresence>
       </div>
@@ -80,8 +86,21 @@ export default function StockRow() {
           );
         })}
       </div>
-    </div>
+    </StockRowDiv>
   );
 }
 
-// const drag = i === discardPile.length - 1 ? true : false;
+const StockRowDiv = styled.div`
+  padding-left: 40px;
+  display: flex;
+  align-self: start;
+  grid-column: 1/-1;
+  @media all and (max-width: 480px) {
+    padding-top: 40px;
+  }
+`;
+
+const StockPile = styled.div`
+  justify-self: right;
+  background: url("restart-26-white.png") center no-repeat;
+`;

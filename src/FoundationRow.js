@@ -1,37 +1,42 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { useAppState } from "./AppContext";
 import { motion } from "framer-motion";
 import FoundationCard from "./FoundationCard";
 
-export default function FoundationRow({ foundationIndex, cards, top }) {
-  let rowRef = useRef();
+export default function FoundationRow({ foundationIndex, cards, cardWidth }) {
+  const [leftBound, setLeftBound] = useState(140);
+  const [topBound, setTopBound] = useState(140);
+  let cardRowRef = useRef();
   const { foundationStore, updateFoundationStore, gameNumber } = useAppState();
 
-  function setBounds() {
-    const rowClientRect = rowRef.current.getBoundingClientRect();
+  function setRowBounds() {
+    const rowBounds = cardRowRef.current.getBoundingClientRect();
+    setLeftBound(rowBounds.left);
+    setTopBound(rowBounds.top);
     const newFoundationStore = [...foundationStore];
-    newFoundationStore[foundationIndex].bounds = rowClientRect;
+    newFoundationStore[foundationIndex].bounds = rowBounds;
     updateFoundationStore(newFoundationStore);
   }
 
-  useEffect(setBounds, [gameNumber]);
+  useEffect(setRowBounds, [gameNumber]);
 
   return (
-    <motion.div ref={rowRef} className="cardRow" id={`f${foundationIndex}`}>
-      <div className="cardPileAnchor">
-        {cards.map((card, i) => {
-          const left = i * 22 + 150;
-          return (
-            <FoundationCard
-              key={card.uid}
-              card={card}
-              i={i}
-              top={top}
-              left={left}
-            />
-          );
-        })}
-      </div>
-    </motion.div>
+    <>
+      <div ref={cardRowRef} className="rowAnchor" />
+      {cards.map((card, i) => {
+        // new left = card offset(i*22), leftBound(dynamic) + f-row padding(20)
+        //old left = card offset(i*22) + tab column width(hard 140) + f-row padding(20)
+        const offset = i * cardWidth * 0.37;
+        const left = offset + leftBound;
+        return (
+          <FoundationCard
+            key={card.uid}
+            card={card}
+            top={topBound}
+            left={left}
+          />
+        );
+      })}
+    </>
   );
 }
