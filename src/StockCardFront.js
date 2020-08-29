@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { useAppState } from "./AppContext";
-import { CardFront, CardFont, FullCardFaceDiv, CardCorner } from "./CardStyles";
+import {
+  CardFront,
+  CardFaceFont,
+  CardFace,
+  CardTopCorner,
+  CardBottomCorner,
+} from "./CardStyles";
 import styled from "styled-components";
 
 const variants = {
@@ -174,14 +180,17 @@ export default function StockCardFront({ i, card, drag }) {
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
     >
-      <CardCorner>
+      <CardTopCorner>
         <p className="value">{card.value}</p>
         <p className="suit">{card.suit}</p>
-      </CardCorner>
-      <FullCardFaceDiv>
-        <CardFont>{card.value}</CardFont>
-        <CardFont>{card.suit}</CardFont>
-      </FullCardFaceDiv>
+      </CardTopCorner>
+      <CardFace>
+        <CardFaceFont>{card.suit}</CardFaceFont>
+      </CardFace>
+      <CardBottomCorner>
+        <p>{card.value}</p>
+        <p>{card.suit}</p>
+      </CardBottomCorner>
     </DiscardFront>
   );
 }

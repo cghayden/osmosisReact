@@ -10,8 +10,11 @@ const CardFront = styled(motion.div)`
   border: 1px solid black;
   background: var(--cardBackground);
   display: grid;
-  grid-template-rows: repeat(2, calc(var(--cardHeight) / 2) px);
-  grid-template-columns: calc(var(--cardWidth) * 0.4) 1fr;
+  /* grid-template-rows: repeat(3, calc(var(--cardHeight) / 3) px); */
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: calc(var(--cardWidth) * 0.4) 1fr calc(
+      var(--cardWidth) * 0.4
+    );
   place-items: center;
   border-radius: 5px;
   z-index: ${(props) => (props.foundation ? 0 : 100)};
@@ -23,28 +26,49 @@ const CardFront = styled(motion.div)`
     margin: 0;
   }
 `;
-const CardCorner = styled.div`
+const CardTopCorner = styled.div`
   display: flex;
   flex-direction: column;
-  font-size: calc(var(--cardHeight) * 0.2);
+  font-size: calc(var(--cardHeight) * 0.18);
   grid-column: 1;
   grid-row: 1;
   align-self: start;
-  padding-top: 4px;
+  align-items: center;
+  padding-top: 2px;
   padding-left: 0px;
+  margin-left: -5px;
   p {
     padding: 0;
     margin: 0;
   }
 `;
-const FullCardFaceDiv = styled.div`
+
+const CardBottomCorner = styled.div`
+  display: flex;
+  flex-direction: column;
+  font-size: calc(var(--cardHeight) * 0.18);
+  grid-column: 3;
+  grid-row: 2;
+  align-self: end;
+  align-items: center;
+  padding-top: 2px;
+  padding-left: 0px;
+  margin-right: -6px;
+  transform: rotateX(180deg) rotateY(180deg);
+  p {
+    padding: 0;
+    margin: 0;
+  }
+`;
+
+const CardFace = styled.div`
   grid-row: 1/-1;
   grid-column: 1/-1;
   place-self: center;
 `;
-const CardFont = styled.p`
-  font-size: calc(var(--cardHeight) * 0.2);
-  margin: 10px 0;
+const CardFaceFont = styled.p`
+  font-size: calc(var(--cardHeight) * 0.24);
+  /* padding: 18px 0 0 0; */
 `;
 const CardBack = styled(motion.div)`
   position: absolute;
@@ -57,4 +81,11 @@ const CardBack = styled(motion.div)`
   transform-style: preserve-3d;
 `;
 
-export { CardFont, CardFront, FullCardFaceDiv, CardCorner, CardBack };
+export {
+  CardFaceFont,
+  CardFront,
+  CardFace,
+  CardTopCorner,
+  CardBottomCorner,
+  CardBack,
+};

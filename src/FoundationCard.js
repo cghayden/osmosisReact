@@ -1,5 +1,11 @@
 import React, { useContext } from "react";
-import { CardFront, CardFont, FullCardFaceDiv, CardCorner } from "./CardStyles";
+import {
+  CardFront,
+  CardFaceFont,
+  CardFace,
+  CardTopCorner,
+  CardBottomCorner,
+} from "./CardStyles";
 import styled from "styled-components";
 import { AppContext } from "./AppContext";
 
@@ -35,14 +41,18 @@ export default function FoundationCard({ card, top, left }) {
       top={top}
       left={left}
     >
-      <CardCorner>
+      <CardTopCorner>
         <p>{card.value}</p>
         <p>{card.suit}</p>
-      </CardCorner>
-      <FullCardFaceDiv>
-        <CardFont>{card.value}</CardFont>
-        <CardFont>{card.suit}</CardFont>
-      </FullCardFaceDiv>
+      </CardTopCorner>
+      <CardFace>
+        {/* <CardFaceFont>{card.value}</CardFaceFont> */}
+        <CardFaceFont>{card.suit}</CardFaceFont>
+      </CardFace>
+      <CardBottomCorner>
+        <p>{card.value}</p>
+        <p>{card.suit}</p>
+      </CardBottomCorner>
     </FoundationCardFront>
   );
 }

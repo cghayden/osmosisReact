@@ -5,9 +5,10 @@ import styled from "styled-components";
 
 import {
   CardFront,
-  CardFont,
-  FullCardFaceDiv,
-  CardCorner,
+  CardFaceFont,
+  CardFace,
+  CardTopCorner,
+  CardBottomCorner,
   CardBack,
 } from "./CardStyles";
 export default function TableauCard({ card, top, left, facedown = false }) {
@@ -207,14 +208,17 @@ export default function TableauCard({ card, top, left, facedown = false }) {
             onMouseDown={handleMouseDown}
             onMouseUp={handleMouseUp}
           >
-            <CardCorner>
+            <CardTopCorner>
               <p>{card.value}</p>
               <p>{card.suit}</p>
-            </CardCorner>
-            <FullCardFaceDiv>
-              <CardFont>{card.value}</CardFont>
-              <CardFont>{card.suit}</CardFont>
-            </FullCardFaceDiv>
+            </CardTopCorner>
+            <CardFace>
+              <CardFaceFont>{card.suit}</CardFaceFont>
+            </CardFace>
+            <CardBottomCorner>
+              <p>{card.value}</p>
+              <p>{card.suit}</p>
+            </CardBottomCorner>
           </TabCardFront>
         )}
       </AnimatePresence>

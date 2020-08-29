@@ -40,7 +40,7 @@ body {
 .rowAnchor {
   width: var(--cardWidth);
   height: var(--cardHeight);
-  border: 1px solid yellow;
+  /* border: 1px solid yellow; */
 }
 
 .hiddenCard {
