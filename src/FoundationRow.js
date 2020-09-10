@@ -1,6 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useAppState } from "./AppContext";
-import { motion } from "framer-motion";
 import FoundationCard from "./FoundationCard";
 
 export default function FoundationRow({ foundationIndex, cards, cardWidth }) {

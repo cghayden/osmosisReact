@@ -11,21 +11,22 @@ import styled from "styled-components";
 
 const variants = {
   initial: {
-    rotateY: 90,
+    rotateY: -90,
     scale: 1.1,
     translateX: -10,
   },
   animate: {
-    originX: 0,
-    originY: 0,
     rotateY: 0,
     scale: 1,
     translateX: 0,
-    // transition: { delay: 0.1 },
+    transition: { duration: 0.2 },
+  },
+  exit: {
+    transition: { delay: 0.5 },
   },
 };
 
-export default function StockCardFront({ i, card, drag }) {
+export default function StockCardFront({ i, card, drag, zIndex }) {
   const [dropTargetBounds, setDropTargetBounds] = useState();
   const [dropTargetIndex, setDropTargetIndex] = useState();
 
@@ -166,12 +167,10 @@ export default function StockCardFront({ i, card, drag }) {
   return (
     <DiscardFront
       red={card.suit === "\u{2665}" || card.suit === "\u{2666}"}
-      key={"f"}
       offset={i < 4 ? `${i * 2}px` : "6px"}
       variants={variants}
       initial={"initial"}
       animate={"animate"}
-      exit={{ rotateY: 0, translateX: 0 }}
       drag={drag}
       onDragStart={setDropTargetValues}
       onDragEnd={(e) => handleDragEnd(e, "discard")}
@@ -179,6 +178,7 @@ export default function StockCardFront({ i, card, drag }) {
       dragElastic={1}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
+      zINdex={zIndex}
     >
       <CardTopCorner>
         <p className="value">{card.value}</p>
@@ -196,6 +196,7 @@ export default function StockCardFront({ i, card, drag }) {
 }
 
 const DiscardFront = styled(CardFront)`
-  /* left: ${(props) => props.offset}; */
-
+  transform-origin: 0% 50% 0px;
+  z-index: ${(props) => props.zIndex};
+  box-shadow: 0px 1px 1px 0px hsl(120, 50%, 15%);
 `;

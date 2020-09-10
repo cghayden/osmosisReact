@@ -34,17 +34,24 @@ export default function StockRow() {
     const stockCopy = [...stock];
     const discardPileCopy = [...discardPile];
     const nextCards = stockCopy.splice(stockCopy.length - count).reverse();
-    updateDiscardPile([...discardPileCopy, ...nextCards]);
     updateStock(stockCopy);
+    updateDiscardPile([...discardPileCopy, ...nextCards]);
+  }
+  function flip1() {
+    const stockCopy = [...stock];
+    const discardPileCopy = [...discardPile, stockCopy.pop()];
+    updateDiscardPile(discardPileCopy);
+    updateStock(stockCopy);
+    return new Promise((resolve) => setTimeout(resolve, 200));
   }
 
-  function flip() {
+  async function flip() {
     if (stock.length === 0) {
       resetStock();
       return;
     }
     if (stock.length === 1) {
-      flipCards(1);
+      flip1();
       return;
     }
     if (stock.length === 2) {
@@ -82,6 +89,7 @@ export default function StockRow() {
               i={i}
               card={card}
               drag={i === discardPile.length - 1 ? true : false}
+              zIndex={i + 5000}
             />
           );
         })}
@@ -98,9 +106,4 @@ const StockRowDiv = styled.div`
   @media all and (max-width: 480px) {
     padding-top: 40px;
   }
-`;
-
-const StockPile = styled.div`
-  justify-self: right;
-  background: url("restart-26-white.png") center no-repeat;
 `;

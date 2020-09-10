@@ -3,7 +3,6 @@
   --cardWidth: min(14vw, 74px);
   --tabColumnWidth: calc(var(--cardWidth) + 20px);
   --tableColor: hsl(120, 50%, 25%);
-  /* --tableColor: #46a46c; */
   --cardBackground: #fcfcfc;
   --cardBack: #00b7ff;
   --cardFlipShadow: #20637e;

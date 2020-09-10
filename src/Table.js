@@ -17,7 +17,6 @@ export default function Table() {
 
   function setCardSize() {
     const cardSize = cardSizeRef.current.getBoundingClientRect();
-    // console.log("cardBounds:", cardSize);
     const measuredCardWidth = cardSize.right - cardSize.left;
     setCardWidth(measuredCardWidth);
   }
@@ -34,7 +33,6 @@ export default function Table() {
       </TableauColumn>
       <FoundationColumn>
         {foundationStore.map((foundation, i) => {
-          const top = i * 140 + 40;
           return (
             <FoundationRow
               cardWidth={cardWidth}
@@ -54,14 +52,10 @@ export default function Table() {
 
 const TableLayout = styled.div`
   padding-top: 20px;
-  /* background: green; */
   max-width: 660px;
   margin: 0 auto;
-  /* height: 100vh; */
   display: grid;
-  /* align-items: center; */
   grid-template-columns: auto 1fr;
-  /* grid-template-rows: calc(var(--cardHeight) * 6) 140px; */
   @media all and (max-width: 480px) {
     padding-top: 60px;
   }
