@@ -8,6 +8,7 @@ import {
   CardBottomCorner,
 } from "./CardStyles";
 import styled from "styled-components";
+import wait from "waait";
 
 const variants = {
   initial: {
@@ -36,46 +37,106 @@ export default function StockCardFront({ i, card, drag, zIndex }) {
     foundationStartValue,
     discardPile,
     updateDiscardPile,
+    clickBounds,
     setClickBounds,
-    stockBounds,
   } = useAppState();
 
-  function handleMouseDown() {
-    setDropTargetValues();
+  function removeCardFromDiscardPile() {
+    const discardPileCopy = [...discardPile];
+    discardPileCopy.pop();
+    updateDiscardPile(discardPileCopy);
   }
 
-  function handleMouseUp(e) {
-    if (!dropTargetBounds) {
-      return;
-    }
+  async function handleClick(e) {
+    console.log("click");
+    if (!clickBounds.clickPlay) return;
+    e.persist();
+    //set source x,y for animation to foundation
+    const targetCardRect = e.target.getBoundingClientRect();
     setClickBounds((clickBounds) => {
       return {
         ...clickBounds,
         clickPlay: true,
-        sourceLeft: stockBounds.left + 100,
-        sourceTop: stockBounds.top,
+        sourceLeft: targetCardRect.left,
+        sourceTop: targetCardRect.top,
       };
     });
-    const newFoundation = { ...foundationStore[dropTargetIndex] };
-    const foundationStoreCopy = [...foundationStore];
-    if (!newFoundation.suit) {
-      newFoundation.suit = card.suit;
+    //is card is a starter for a new foundation?
+    // targetFoundation: {suit: null, cards: Array(0), bounds: DOMRect}
+    if (card.value === foundationStartValue) {
+      // find next foundation object where suit is unassigned
+      const nextFoundationIndex = foundationStore.findIndex(
+        (fndtn) => fndtn.suit === null
+      );
+      const targetFoundation = foundationStore[nextFoundationIndex];
+      targetFoundation.suit = card.suit;
+      targetFoundation.cards.push(card);
+      removeCardFromDiscardPile();
+      return;
     }
-    newFoundation.cards = [...newFoundation.cards, card];
-    foundationStoreCopy[dropTargetIndex] = newFoundation;
-    updateFoundationStore(foundationStoreCopy);
-    removeCardFromDiscardPile();
+    // not a starter: is there an existing foundation with same suit ?
+    const existingFoundationIndex = foundationStore.findIndex(
+      (el) => el.suit === card.suit
+    );
+    // yes; foundation of same suit in top foundation row
+    if (existingFoundationIndex === 0) {
+      const existingFoundationCopy = foundationStore.find(
+        (el) => el.suit === card.suit
+      );
+      existingFoundationCopy.cards.push(card);
+      removeCardFromDiscardPile();
+      return;
+    }
+    //yes, foundation of same suit in row 2,3,4( foundation store index 1,2,3)
+    if (existingFoundationIndex > 0) {
+      //check if  previous foundation has the dragged card's value:
+      const previousFoundationHasValue = foundationStore[
+        existingFoundationIndex - 1
+      ].cards.filter(
+        (previousFoundationCard) => previousFoundationCard.value === card.value
+      );
+      if (previousFoundationHasValue.length > 0) {
+        const existingFoundationCopy = foundationStore[existingFoundationIndex];
+        existingFoundationCopy.cards.push(card);
+        removeCardFromDiscardPile();
+      }
+    }
   }
 
-  function setDropTargetValues(e) {
-    setClickBounds((clickBounds) => {
-      return {
-        ...clickBounds,
-        clickPlay: false,
-      };
-    });
+  async function handleDragStart() {
+    setDropTargetValues();
+  }
+
+  async function handleDragEnd(e) {
+    console.log("drag end");
+    if (!dropTargetBounds) {
+      setClickBounds({ clickPlay: true });
+      return;
+    } else {
+      const dropPosition = { x: ~~e.clientX, y: ~~e.clientY };
+      if (
+        dropTargetBounds.top < dropPosition.y &&
+        dropPosition.y < dropTargetBounds.bottom
+      ) {
+        const newFoundation = { ...foundationStore[dropTargetIndex] };
+        const foundationStoreCopy = [...foundationStore];
+        if (!newFoundation.suit) {
+          newFoundation.suit = card.suit;
+        }
+        newFoundation.cards = [...newFoundation.cards, card];
+        foundationStoreCopy[dropTargetIndex] = newFoundation;
+        updateFoundationStore(foundationStoreCopy);
+        removeCardFromDiscardPile();
+      }
+    }
+    await wait(200);
+    setClickBounds({ clickPlay: true });
+  }
+
+  function setDropTargetValues() {
     //options: 1. =startValue, set in a new foundationRow
     if (card.value === foundationStartValue) {
+      setClickBounds({ clickPlay: false });
       const nextFoundationIndex = foundationStore.findIndex(
         (el) => el.suit === null
       );
@@ -88,13 +149,8 @@ export default function StockCardFront({ i, card, drag, zIndex }) {
     const existingFoundationIndex = foundationStore.findIndex(
       (el) => el.suit === card.suit
     );
-    if (existingFoundationIndex === -1) {
-      // no drop values set
-      setDropTargetIndex();
-      setDropTargetBounds();
-      return;
-    }
     if (existingFoundationIndex === 0) {
+      setClickBounds({ clickPlay: false });
       const existingFoundation = foundationStore.find(
         (el) => el.suit === card.suit
       );
@@ -104,6 +160,7 @@ export default function StockCardFront({ i, card, drag, zIndex }) {
     }
     //if existing index is 1,
     if (existingFoundationIndex > 0) {
+      setClickBounds({ clickPlay: false });
       //check if  previous foundation has the dragged card's value:
       const previousFoundationHasValue = foundationStore[
         existingFoundationIndex - 1
@@ -117,51 +174,13 @@ export default function StockCardFront({ i, card, drag, zIndex }) {
         setDropTargetIndex(existingFoundationIndex);
         setDropTargetBounds(existingFoundation.bounds);
       }
+      return;
     }
     //3.  value not starter and suit not in a row.
     else {
       setDropTargetIndex(null);
       setDropTargetBounds(null);
     }
-    return;
-  }
-  function removeCardFromDiscardPile() {
-    const discardPileCopy = [...discardPile];
-    discardPileCopy.pop();
-    updateDiscardPile(discardPileCopy);
-  }
-
-  function handleDragEnd(e, source) {
-    function removeCardFromDiscardPile() {
-      const discardPileCopy = [...discardPile];
-      discardPileCopy.pop();
-      updateDiscardPile(discardPileCopy);
-    }
-
-    if (!dropTargetBounds) {
-      return;
-    }
-    const dropPosition = { x: ~~e.clientX, y: ~~e.clientY };
-
-    if (
-      dropTargetBounds.left < dropPosition.x &&
-      dropPosition.x < dropTargetBounds.right &&
-      dropTargetBounds.top < dropPosition.y &&
-      dropPosition.y < dropTargetBounds.bottom
-    ) {
-      const newFoundation = { ...foundationStore[dropTargetIndex] };
-      const foundationStoreCopy = [...foundationStore];
-      if (!newFoundation.suit) {
-        newFoundation.suit = card.suit;
-      }
-      newFoundation.cards = [...newFoundation.cards, card];
-      foundationStoreCopy[dropTargetIndex] = newFoundation;
-      updateFoundationStore(foundationStoreCopy);
-      removeCardFromDiscardPile();
-    } else {
-      return;
-    }
-    //need to reset dropTargetValues to undefined
   }
 
   return (
@@ -172,13 +191,12 @@ export default function StockCardFront({ i, card, drag, zIndex }) {
       initial={"initial"}
       animate={"animate"}
       drag={drag}
-      onDragStart={setDropTargetValues}
-      onDragEnd={(e) => handleDragEnd(e, "discard")}
+      onDragStart={handleDragStart}
+      onDragEnd={(e) => handleDragEnd(e)}
       dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
       dragElastic={1}
-      onMouseDown={handleMouseDown}
-      onMouseUp={handleMouseUp}
-      zINdex={zIndex}
+      onClick={(e) => handleClick(e)}
+      zIndex={zIndex}
     >
       <CardTopCorner>
         <p className="value">{card.value}</p>

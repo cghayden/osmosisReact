@@ -11,6 +11,7 @@ import { AppContext } from "./AppContext";
 
 const cardVariants = {
   initial: (custom) => {
+    console.log("custom:", custom);
     return {
       translateX: custom.clickPlay ? custom.sourceLeft - custom.left : 0,
       translateY: custom.clickPlay ? custom.sourceTop - custom.top : 0,
@@ -61,4 +62,5 @@ const FoundationCardFront = styled(CardFront)`
   position: fixed;
   left: ${(props) => props.left + "px"};
   top: ${(props) => props.top + "px"};
+  z-index: 1000;
 `;
