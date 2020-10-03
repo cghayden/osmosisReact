@@ -15,16 +15,12 @@ const CardFront = styled(motion.div)`
   grid-template-columns: 1fr 1fr 1fr;
   place-items: center;
   border-radius: 5px;
-  z-index: ${(props) => (props.foundation ? 0 : 100)};
   backface-visibility: hidden;
   color: ${(props) => (props.red ? "red" : "black")};
-
-  .value,
-  .suit {
-    margin: 0;
-  }
 `;
+
 const CardTopCorner = styled.div`
+  pointer-events: none;
   display: flex;
   flex-direction: column;
   font-size: 19px;
@@ -42,6 +38,7 @@ const CardTopCorner = styled.div`
 `;
 
 const CardBottomCorner = styled.div`
+  pointer-events: none;
   display: flex;
   flex-direction: column;
   font-size: 19px;
@@ -60,14 +57,16 @@ const CardBottomCorner = styled.div`
 `;
 
 const CardFace = styled.div`
+  pointer-events: none;
   grid-row: 1/-1;
   grid-column: 1/-1;
   place-self: center;
 `;
 const CardFaceFont = styled.p`
+  pointer-events: none;
   font-size: 25px;
-  /* padding: 18px 0 0 0; */
 `;
+
 const CardBack = styled(motion.div)`
   position: absolute;
   left: ${(props) => props.offset};

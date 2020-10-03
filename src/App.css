@@ -57,3 +57,11 @@ body {
   justify-self: center;
   margin-left: 20px;
 }
+
+.z-under {
+  z-index: 1;
+}
+
+.z-over {
+  z-index: 10000;
+}

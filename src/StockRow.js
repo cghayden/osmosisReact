@@ -72,12 +72,7 @@ export default function StockRow() {
       >
         <AnimatePresence>
           {stock.slice(stock.length - 4).map((card, i) => (
-            <StockCardBack
-              key={card.uid}
-              i={i}
-              card={card}
-              className="ladybird"
-            />
+            <StockCardBack key={card.uid} i={i} card={card} />
           ))}
         </AnimatePresence>
       </div>
@@ -89,7 +84,6 @@ export default function StockRow() {
               i={i}
               card={card}
               drag={i === discardPile.length - 1 ? true : false}
-              zIndex={i + 5000}
             />
           );
         })}

@@ -48,7 +48,6 @@ export default function StockCardFront({ i, card, drag, zIndex }) {
   }
 
   async function handleClick(e) {
-    console.log("click");
     if (!clickBounds.clickPlay) return;
     e.persist();
     //set source x,y for animation to foundation
@@ -196,7 +195,7 @@ export default function StockCardFront({ i, card, drag, zIndex }) {
       dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
       dragElastic={1}
       onClick={(e) => handleClick(e)}
-      zIndex={zIndex}
+      // zIndex={zIndex}
     >
       <CardTopCorner>
         <p className="value">{card.value}</p>
@@ -215,6 +214,5 @@ export default function StockCardFront({ i, card, drag, zIndex }) {
 
 const DiscardFront = styled(CardFront)`
   transform-origin: 0% 50% 0px;
-  z-index: ${(props) => props.zIndex};
   box-shadow: 0px 1px 1px 0px hsl(120, 50%, 15%);
 `;
