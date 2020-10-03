@@ -17,7 +17,6 @@ const cardVariants = {
     };
   },
   animate: {
-    transition: { duration: 20 },
     translateX: 0,
     translateY: 0,
   },
