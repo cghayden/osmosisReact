@@ -29,8 +29,7 @@ const CardTopCorner = styled.div`
   align-self: start;
   align-items: center;
   padding-top: 2px;
-  padding-left: 0px;
-  margin-left: -5px;
+  margin-left: -2px;
   p {
     padding: 0;
     margin: 0;
@@ -47,8 +46,8 @@ const CardBottomCorner = styled.div`
   align-self: end;
   align-items: center;
   padding-top: 2px;
-  padding-left: 0px;
-  margin-right: -6px;
+  /* padding-left: 2px;
+  margin-right: -6px; */
   transform: rotateX(180deg) rotateY(180deg);
   p {
     padding: 0;
