@@ -75,7 +75,10 @@ const CardBack = styled(motion.div)`
   box-shadow: 1px 2px 3px 0px hsl(120, 50%, 15%),
     -1px 1px 3px 0px hsl(120, 50%, 29%);
   transform-style: preserve-3d;
-  background: blue;
+  background: var(--rainbowLove);
+  /* background: var(--redStarburst); */
+  /* background: var(--addie); */
+  background-size: cover;
 `;
 
 export {
