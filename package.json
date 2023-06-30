@@ -9,7 +9,7 @@
     "framer-motion": "^1.11.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.3",
+    "react-scripts": "5.0.1",
     "styled-components": "^5.3.11",
     "waait": "^1.0.5"
   },
