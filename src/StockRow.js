@@ -1,9 +1,9 @@
-import React, { useRef, useEffect } from "react";
-import { AnimatePresence } from "framer-motion";
-import styled from "styled-components";
-import StockCardFront from "./StockCardFront";
-import StockCardBack from "./StockCardBack";
-import { useAppState } from "./AppContext";
+import React, { useRef, useEffect } from 'react';
+import { AnimatePresence } from 'framer-motion';
+import styled from 'styled-components';
+import StockCardFront from './StockCardFront';
+import StockCardBack from './StockCardBack';
+import { useAppState } from './AppContext';
 
 export default function StockRow() {
   const {
@@ -59,8 +59,8 @@ export default function StockRow() {
   return (
     <StockRowDiv>
       <div
-        className="cardPileAnchor stockPileAnchor"
-        onClick={() => flip()}
+        className='cardPileAnchor stockPileAnchor'
+        onClick={() => flipCards(1)}
         ref={stockRef}
       >
         <AnimatePresence>
@@ -69,12 +69,12 @@ export default function StockRow() {
               key={card.uid}
               i={i}
               card={card}
-              className="ladybird"
+              className='ladybird'
             />
           ))}
         </AnimatePresence>
       </div>
-      <div className="cardPileAnchor discardPile">
+      <div className='cardPileAnchor discardPile'>
         {discardPile.map((card, i) => {
           return (
             <StockCardFront
@@ -102,5 +102,5 @@ const StockRowDiv = styled.div`
 
 const StockPile = styled.div`
   justify-self: right;
-  background: url("restart-26-white.png") center no-repeat;
+  background: url('restart-26-white.png') center no-repeat;
 `;

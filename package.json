@@ -1,13 +1,16 @@
 {
   "name": "osmosis",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
+  "engines": {
+    "node": "=16.0.0"
+  },
   "dependencies": {
     "framer-motion": "^1.11.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.3",
-    "styled-components": "^5.1.1",
+    "styled-components": "^5.3.11",
     "waait": "^1.0.5"
   },
   "scripts": {
